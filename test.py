@@ -30,13 +30,17 @@ class BaseHandler(tornado.web.RequestHandler):
           return None
 
 
-class RegisterUser(tornado.web.RequestHandler):
+class RegisterUser(BaseHandler):
 
+    def get(self):
+        self.render('register_1.html')
+
+    @asynchronous
     def post(self):
         login_response = {}
 
         email_address = self.get_argument('email', '')
-        password = self.get_argument('pwd', '')
+        password = self.get_argument('password', '')
         name = self.get_argument('name', '')
         age = self.get_argument('age', '')
 
@@ -53,14 +57,15 @@ class RegisterUser(tornado.web.RequestHandler):
         else:
             print name
             register = CheckCredentials.save(email_address, password, name, age)
+            self.redirect('/login')
 
-            response = {'success': True, 'msg': 'You have been registered successfully'}\
-                        if not register else {'success': True, 'msg': \
-                        'This email_id has already been registered'}
+        #     response = {'success': True, 'msg': 'You have been registered successfully'}\
+        #                 if not register else {'success': True, 'msg': \
+        #                 'This email_id has already been registered'}
                 
-            login_response.update(response)
+        #     login_response.update(response)
 
-        self.write(login_response)
+        # self.write(login_response)
 
 
 class GetUser(BaseHandler):
@@ -108,7 +113,6 @@ class GetUser(BaseHandler):
 
 class UserDashboard(BaseHandler):
 
-    @asynchronous
     @tornado.gen.coroutine
     def get(self):
         print self.get_current_user()

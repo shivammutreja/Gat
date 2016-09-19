@@ -24,6 +24,26 @@ input[type=username] {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
+input[type=name] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+input[type=age] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
 
 /* Set a style for all buttons */
