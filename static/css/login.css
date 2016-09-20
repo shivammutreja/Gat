@@ -45,7 +45,16 @@ input[type=age] {
     border-bottom-left-radius: 0;
 }
 
+select {
+    position: relative;
+}
 
+/* Style by id. Effects position of the select drop down. */
+#users {
+    background-color: #F4F4F4;
+    color: #555;
+    left: 70px;
+}
 /* Set a style for all buttons */
 button {
     background-color: #4CAF50;

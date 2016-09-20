@@ -43,6 +43,7 @@ class RegisterUser(BaseHandler):
         password = self.get_argument('password', '')
         name = self.get_argument('name', '')
         age = self.get_argument('age', '')
+        user_type = self.get_argument('types')
 
         if not email_address:
             login_response.update({
@@ -56,7 +57,8 @@ class RegisterUser(BaseHandler):
             })
         else:
             print name
-            register = CheckCredentials.save(email_address, password, name, age)
+            register = CheckCredentials.save(email_address, password,\
+                                         name, age, user_type)
             self.redirect('/login')
 
         #     response = {'success': True, 'msg': 'You have been registered successfully'}\
