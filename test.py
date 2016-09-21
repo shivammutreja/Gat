@@ -119,10 +119,9 @@ class UserDashboard(BaseHandler):
     def get(self):
         print self.get_current_user()
         entry = self.get_current_user()
-        users = CheckCredentials.get_users(entry['user_id'])
         view = yield self.get_if_hod(entry)
         print view
-        self.render(view, user=entry, users=users)
+        self.render(view, user=entry)
 
     @tornado.gen.coroutine
     def get_if_hod(self, entry):
@@ -131,30 +130,10 @@ class UserDashboard(BaseHandler):
         else:
             raise tornado.gen.Return('dashboard_user.html')
 
-class AddUser(BaseHandler):
-
-    def get(self):
-        self.render('create_user.html')
-
-    def post(self):
-
-        email_address = self.get_argument('email', '')
-        password = self.get_argument('password', '')
-        name = self.get_argument('name', '')
-        age = self.get_argument('age', '')
-        chapter = self.get_argument('chapter')
-        hod_user_hash = self.get_current_user().get('user_id')
-
-        CheckCredentials.save_user(hod_user_hash, name, age,\
-        email_address, chapter)
-
-        self.redirect('/dashboard')
-
 handlers = [
 		(r"/register", RegisterUser),
 		(r"/login", GetUser),
         (r"/dashboard", UserDashboard),
-        (r"/add_user", AddUser),
     ]
 
 settings = dict(

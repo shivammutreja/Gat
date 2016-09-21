@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{{static_url('css/login.css')}}">
+</head>
+<div class="container">
+    <form action="add_user" method="post" id="registration_form">
+        <label><b>Email</b></label>
+        <input type="username" placeholder="Enter Email" name="email" required>
+
+        <label><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+
+        <label><b>Name</b></label>
+        <input type="name" placeholder="Enter Username" name="name" required>
+
+        <label><b>Age</b></label>
+        <input type="age" placeholder="Enter Age" name="age" required>
+
+        <label><b>Assign a chapter</b></label>
+        <select id="chapters" name="chapter">
+          <option value="chapter_1">Chapter 1</option>
+          <option value="chapter_2">Chapter 2</option>
+        </select>
+        <br></br>
+
+        <button type="submit">Add User</button>
+
+        <div class="container" style="background-color:#f1f1f1">
+          <button type="button" class="cancelbtn">Cancel</button>
+        </div>
+    </form>
+</div>
+</html>
