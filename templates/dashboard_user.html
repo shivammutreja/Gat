@@ -1,9 +1,31 @@
 <!DOCTYPE HTML>
 <html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{static_url('css/login.css')}}">
+    <script type="text/javascript" src="{{static_url('scripts/main.js')}}"></script>
+</head>
+
 	<title>User</title>
 	<body>
-		Hello {{user['name'].title()}}
+		Hello {{user['user_name'].title()}}
 		<br/>
 		You're just another User
+
+		{% if users %}
+		<div class="container-fluid">
+			<input type="button" name="answer" value="Show Task" onclick="showDiv()" />
+
+			<div id="welcomeDiv" style="display:none;" class="row">
+				<li> {{users}} </li>
+			</div>
+		</div>
+		{% end %}
+
 	</body>
+
 </html>
