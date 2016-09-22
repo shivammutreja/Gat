@@ -11,6 +11,9 @@ myImage.onclick = function() {
     }
 }*/
 
+function showDiv() {
+    document.getElementById('welcomeDiv').style.display = "block";
+}
 
 //personalized welcome page
 

@@ -106,7 +106,7 @@ class GetUser(BaseHandler):
             # print login_response
 
     def set_current_user(self, username):
-        print "setting "+username['name']
+        # print "setting "+username['name']
         if username:
           self.set_secure_cookie("user", tornado.escape.json_encode(username))
         else:
@@ -119,23 +119,33 @@ class UserDashboard(BaseHandler):
     def get(self):
         print self.get_current_user()
         entry = self.get_current_user()
-        users = CheckCredentials.get_users(entry['user_id'])
+        users_or_tasks = yield self.get_users_or_tasks(entry)
         view = yield self.get_if_hod(entry)
         print view
-        self.render(view, user=entry, users=users)
+        self.render(view, user=entry, users=users_or_tasks)
 
     @tornado.gen.coroutine
     def get_if_hod(self, entry):
-        if entry['hod']:
+        if 'hod' in entry.keys():
             raise tornado.gen.Return('dashboard_hod.html')
         else:
             raise tornado.gen.Return('dashboard_user.html')
+
+    @tornado.gen.coroutine
+    def get_users_or_tasks(self, entry):
+        if 'hod' in entry.keys():
+            users = CheckCredentials.get_users(entry['user_id'])
+            raise tornado.gen.Return(users)
+        else:
+            tasks = CheckCredentials.get_user_tasks(entry['user_id'])
+            raise tornado.gen.Return(tasks)
 
 class AddUser(BaseHandler):
 
     def get(self):
         self.render('create_user.html')
 
+    @tornado.gen.coroutine
     def post(self):
 
         email_address = self.get_argument('email', '')
@@ -146,15 +156,16 @@ class AddUser(BaseHandler):
         hod_user_hash = self.get_current_user().get('user_id')
 
         CheckCredentials.save_user(hod_user_hash, name, age,\
-        email_address, chapter)
+        email_address, password, chapter)
+        print 'let\'s check'
 
         self.redirect('/dashboard')
 
 handlers = [
-		(r"/register", RegisterUser),
-		(r"/login", GetUser),
-        (r"/dashboard", UserDashboard),
-        (r"/add_user", AddUser),
+    (r"/register", RegisterUser),
+    (r"/login", GetUser),
+    (r"/dashboard", UserDashboard),
+    (r"/add_user", AddUser),
     ]
 
 settings = dict(
