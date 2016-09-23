@@ -3,10 +3,14 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!--     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ -->    
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/components/table.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
     <link rel="stylesheet" href="{{static_url('css/login.css')}}">
+    
     <script type="text/javascript" src="{{static_url('scripts/main.js')}}"></script>
 </head>
 
@@ -22,6 +26,32 @@
         </form>
 
         {% if users %}
+        <div class="main ui container">
+            <input type="button" name="answer" value="Show Users" onclick="showDiv()" />
+            <table class="ui celled table" id="welcome" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Users</th>
+                    <th>Tasks</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for user_name in users %}
+            <tr>
+                <td>{{user_name['user_name']}}</td>
+                <td>{{user_name['chapter']}}</td>
+                <td>{{user_name['user_email']}}</td>
+            </tr>
+            {% end %}
+            </tbody>
+
+            </table>
+        </div>
+        {% end %}
+
+        <!-- {% if users %}
         <div class="container-fluid">
             <input type="button" name="answer" value="Show Users" onclick="showDiv()" />
 
@@ -29,7 +59,6 @@
 
                 <div class="col-md-4" style="background-color:lavender;">
                     <b>Users</b>
-                    <hr>
                     {% for user_name in users %}
                         <li>{{user_name['user_name']}}</li>
                     {% end %}
@@ -54,7 +83,7 @@
 
             </div>
         </div>
-        {% end %}
+        {% end %} -->
         <!-- <script type="text/javascript">
         	function showDiv() {
         		document.getElementById('welcomeDiv').style.display = "block";
