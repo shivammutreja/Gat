@@ -1,0 +1,7 @@
+boto==2.38.0 
+ipython==5.1.0 
+motor==0.6.2 
+requests==2.7.0 
+termcolor==1.1.0 
+tornado==4.0.2 
+tree==0.1.0
