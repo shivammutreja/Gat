@@ -12,7 +12,7 @@ myImage.onclick = function() {
 }*/
 
 function showDiv() {
-    document.getElementById('welcomeDiv').style.display = "block";
+    document.getElementById('welcome').style.display = "block";
 }
 
 //personalized welcome page

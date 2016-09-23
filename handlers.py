@@ -73,7 +73,7 @@ class RegisterUser(BaseHandler):
 class GetUser(BaseHandler):
 
     def get(self):
-    	self.render("login.html")
+    	self.render("new_login.html")
 
     @asynchronous
     def post(self):
