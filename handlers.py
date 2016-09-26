@@ -127,9 +127,11 @@ class UserDashboard(BaseHandler):
     @tornado.gen.coroutine
     def get_if_hod(self, entry):
         if 'hod' in entry.keys():
-            raise tornado.gen.Return('dashboard_hod.html')
+            # raise tornado.gen.Return('dashboard_hod.html')
+            raise tornado.gen.Return('dashboard_hod_new.html')
         else:
-            raise tornado.gen.Return('dashboard_user.html')
+            # raise tornado.gen.Return('dashboard_user.html')
+            raise tornado.gen.Return('dashboard_user_new.html')
 
     @tornado.gen.coroutine
     def get_users_or_tasks(self, entry):
@@ -161,11 +163,17 @@ class AddUser(BaseHandler):
 
         self.redirect('/dashboard')
 
+class ShowEditor(BaseHandler):
+
+    def get(self):
+        self.render('test_editor.html')
+
 handlers = [
     (r"/register", RegisterUser),
     (r"/login", GetUser),
     (r"/dashboard", UserDashboard),
     (r"/add_user", AddUser),
+    (r"/editor", ShowEditor),
     ]
 
 settings = dict(
