@@ -8,6 +8,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{static_url('css/login.css')}}">
     <script type="text/javascript" src="{{static_url('scripts/main.js')}}"></script>
+    <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
 </head>
 
 	<title>User</title>
@@ -25,6 +26,20 @@
 			</div>
 		</div>
 		{% end %}
+
+		<form>
+	    		<textarea name="editor1" cols="80" rows="10" id="content">HTML editor content.
+	                Textbox.io is the first WYSIWYG HTML editor designed for desktop and mobile devices. Its speech to enter content and enjoy effortless rich text editing from anywhere.
+				</textarea>
+	    		<button type="submit">Submit</button>
+	  	</form>
+	  	<script type="text/javascript">
+		  	CKEDITOR.replace( 'editor1', {
+	   // filebrowserBrowseUrl: '/browser/browse.php',
+	    filebrowserUploadUrl: '/uploader/upload.php'
+		});
+	  	</script>
+	  	
 
 	</body>
 
