@@ -166,7 +166,18 @@ class AddUser(BaseHandler):
 class ShowEditor(BaseHandler):
 
     def get(self):
-        self.render('test_editor.html')
+        user = self.get_current_user()
+        print user
+        content = user.get('content') if 'content' in user.keys() else None
+        self.render('test_editor.html', content=content)
+
+
+    def post(self):
+        user_hash = self.get_current_user().get('user_id')
+        content = self.get_body_argument("editor1", default=None, strip=False)
+        # content = self.get_argument('editor1')
+        # print content
+        CheckCredentials.save_user_task(user_hash, content)
 
 handlers = [
     (r"/register", RegisterUser),
@@ -196,7 +207,7 @@ def main():
         http_server.bind("8000")
         http_server.start(30)
         loop = tornado.ioloop.IOLoop.instance()
-        # signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
+        signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
         loop.start()
 
 if __name__ == '__main__':

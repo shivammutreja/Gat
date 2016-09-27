@@ -6,7 +6,15 @@
         <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
     </head>
     <body>
-        <textarea name="editor1"></textarea>
+        <form action="editor" method="post">
+            {% if content %}
+            <textarea name="editor1">{{content}}</textarea>
+            {% else %}
+            <textarea name="editor1">Write content here!</textarea>
+            {% end %}
+            <br>
+            <button class="button" type="submit">Submit</button>
+        </form>
         <script>
 		CKEDITOR.replace( 'editor1', {
    // filebrowserBrowseUrl: '/browser/browse.php',

@@ -3,6 +3,7 @@
 import pymongo
 import hashlib
 import settings
+# from bs4 import BeautifulSoup
 
 conn = settings.get_mongodb_connection()
 coll = conn.test_db.test_coll
@@ -67,5 +68,10 @@ class CheckCredentials:
             return tasks
         except Exception,e:
             print e
+
+    @staticmethod
+    def save_user_task(user_hash, content):
+        user_coll.update({'user_id': user_hash}, {'$set': {'content': content}})
+
 
 
