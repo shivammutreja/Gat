@@ -73,7 +73,7 @@ class RegisterUser(BaseHandler):
 class GetUser(BaseHandler):
 
     def get(self):
-    	self.render("new_login.html")
+        self.render("new_login.html")
 
     @asynchronous
     def post(self):
@@ -163,6 +163,7 @@ class AddUser(BaseHandler):
 
         self.redirect('/dashboard')
 
+
 class ShowEditor(BaseHandler):
 
     def get(self):
@@ -179,36 +180,52 @@ class ShowEditor(BaseHandler):
         # print content
         CheckCredentials.save_user_task(user_hash, content)
 
+
+class UploadMedia(BaseHandler):
+
+    def get(self):
+        user = self.get_current_user()
+        print user
+
+        self.render('media_upload.html')
+
+    # @tornado.gen.coroutine
+    # def post(self):
+    #
+
 handlers = [
     (r"/register", RegisterUser),
     (r"/login", GetUser),
     (r"/dashboard", UserDashboard),
     (r"/add_user", AddUser),
     (r"/editor", ShowEditor),
-    ]
+    (r'/upload', UploadMedia),
+]
 
 settings = dict(
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         cookie_secret="cookie_secret",
-	)
+)
 
 app = tornado.web.Application(handlers, **settings)
 
+
 def on_shutdown():
-        print terminal.red(terminal.bold('Shutting down'))
-        tornado.ioloop.IOLoop.instance().stop()
-        ##gracefully closing mongo connection
-        #MONGO_CONNECTION.close()
-        client.close()
+    print terminal.red(terminal.bold('Shutting down'))
+    tornado.ioloop.IOLoop.instance().stop()
+    ##gracefully closing mongo connection
+    #MONGO_CONNECTION.close()
+    # client.close()
+
 
 def main():
-        http_server = tornado.httpserver.HTTPServer(app)
-        http_server.bind("8000")
-        http_server.start(30)
-        loop = tornado.ioloop.IOLoop.instance()
-        signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
-        loop.start()
+    http_server = tornado.httpserver.HTTPServer(app)
+    http_server.bind("8000")
+    http_server.start(30)
+    loop = tornado.ioloop.IOLoop.instance()
+    signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
+    loop.start()
 
 if __name__ == '__main__':
     print 'Server Reloaded'
