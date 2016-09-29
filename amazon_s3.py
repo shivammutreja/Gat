@@ -13,9 +13,9 @@ import requests
 file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(file_path)
 
-S3_BUCKET_NAME='sports_unity_profile_pics'
-AMAZON_SECRET_KEY='tqrY1QLdDfAhOMj4veL+KNskpoTceF9J8Tn1ZDhd'
-AMAZON_ACCESS_KEY='AKIAIJVCZGHIZLQ7EAXQ'
+S3_BUCKET_NAME=''
+AMAZON_SECRET_KEY=''
+AMAZON_ACCESS_KEY=''
 
 
 from boto.s3.connection import S3Connection
