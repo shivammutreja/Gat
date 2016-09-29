@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+import os, uuid
 import tornado
 import tornado.httpserver
 import tornado.ioloop
@@ -12,6 +12,7 @@ import signal
 import json
 from blessings import Terminal
 from check_credentials import CheckCredentials
+from amazon_s3 import AmazonS3
 
 terminal = Terminal()
 
@@ -181,17 +182,30 @@ class ShowEditor(BaseHandler):
         CheckCredentials.save_user_task(user_hash, content)
 
 
-class UploadMedia(BaseHandler):
+class UploadMedia(tornado.web.RequestHandler):
 
     def get(self):
-        user = self.get_current_user()
-        print user
-
+        # user = self.get_current_user()
+        # print user
         self.render('media_upload.html')
 
-    # @tornado.gen.coroutine
-    # def post(self):
-    #
+    @asynchronous
+    @tornado.gen.coroutine
+    def post(self):
+        fileinfo = self.request.files['filearg'][0]
+        print "fileinfo is", fileinfo.keys()
+        fname = fileinfo['filename']
+        fbody = fileinfo['body']
+        upload = yield self.upload(fbody, fname)
+        # print 'uploaded' if upload else 'uploading'
+        print 'bhag!'
+
+    @tornado.gen.coroutine
+    def upload(self, file_body, file_name):
+        s3_obj = AmazonS3(image_link=file_body, news_id=file_name)  
+        raise tornado.gen.Return(s3_obj.run())
+
+
 
 handlers = [
     (r"/register", RegisterUser),
