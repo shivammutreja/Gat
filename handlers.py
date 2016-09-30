@@ -192,11 +192,13 @@ class UploadMedia(tornado.web.RequestHandler):
     @asynchronous
     @tornado.gen.coroutine
     def post(self):
-        fileinfo = self.request.files['filearg'][0]
-        print "fileinfo is", fileinfo.keys()
-        fname = fileinfo['filename']
-        fbody = fileinfo['body']
-        upload = yield self.upload(fbody, fname)
+        fileinfo = self.request.files['filearg']
+        # ['filearg']
+        for f in fileinfo:
+            fname = f['filename']
+            fbody = f['body']
+            print fname
+            upload = yield self.upload(fbody, fname)
         # print 'uploaded' if upload else 'uploading'
         print 'bhag!'
 
