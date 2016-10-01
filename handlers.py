@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, uuid
+import os, uuid, sys
 import tornado
 import tornado.httpserver
 import tornado.ioloop
@@ -12,7 +12,9 @@ import signal
 import json
 from blessings import Terminal
 from check_credentials import CheckCredentials
-from amazon_s3 import AmazonS3
+from upload_scripts.amazon_s3 import AmazonS3
+from upload_scripts.main import run_upload
+video_dir = '/home/shivam/gat/Gat/files_to_upload/'
 
 terminal = Terminal()
 
@@ -182,7 +184,7 @@ class ShowEditor(BaseHandler):
         CheckCredentials.save_user_task(user_hash, content)
 
 
-class UploadMedia(tornado.web.RequestHandler):
+class UploadImage(tornado.web.RequestHandler):
 
     def get(self):
         # user = self.get_current_user()
@@ -207,6 +209,44 @@ class UploadMedia(tornado.web.RequestHandler):
         s3_obj = AmazonS3(image_link=file_body, news_id=file_name)  
         raise tornado.gen.Return(s3_obj.run())
 
+class UploadVideo(tornado.web.RequestHandler):
+
+    def get(self):
+        # user = self.get_current_user()
+        # print user
+        self.render('media_upload.html')
+
+    @asynchronous
+    @tornado.gen.coroutine
+    def post(self):
+        fileinfo = self.request.files['filearg']
+        # ['filearg']
+        for f in fileinfo:
+            fname = f['filename']
+            fpath = video_dir+fname
+            fbody = f['body']
+            print fname
+            new_file = open(video_dir+fname, 'a')
+            new_file.write(fbody)
+            new_file.close()
+            upload = yield self.upload_video(fpath, 'Fist Upload')
+        # print 'uploaded' if upload else 'uploading'
+        print 'bhag!'
+
+    @tornado.gen.coroutine
+    def upload_video(self, file_path, title):
+        raise tornado.gen.coroutine(run_upload(file_path, title))
+
+class UserVideos(BaseHandler):
+
+    def get(self):
+        # user = self.get_current_user()
+        # print user
+        user_hash = self.get_current_user().get('user_id')
+        video_id = CheckCredentials.get_videos(user_hash)
+        print video_id
+        self.render('watch_video.html', video_id=video_id)
+
 
 
 handlers = [
@@ -215,7 +255,9 @@ handlers = [
     (r"/dashboard", UserDashboard),
     (r"/add_user", AddUser),
     (r"/editor", ShowEditor),
-    (r'/upload', UploadMedia),
+    (r'/upload_image', UploadImage),
+    (r'/upload_video', UploadVideo),
+    (r'/your_videos', UserVideos),
 ]
 
 settings = dict(
@@ -238,7 +280,7 @@ def on_shutdown():
 def main():
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.bind("8000")
-    http_server.start(30)
+    http_server.start(20)
     loop = tornado.ioloop.IOLoop.instance()
     signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
     loop.start()

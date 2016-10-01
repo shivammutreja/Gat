@@ -10,9 +10,9 @@ from PIL import Image
 import PIL
 import base64
 import requests
-from global_credentials import S3_BUCKET_NAME, AMAZON_SECRET_KEY, AMAZON_ACCESS_KEY
 file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(file_path)
+from global_credentials import S3_BUCKET_NAME, AMAZON_SECRET_KEY, AMAZON_ACCESS_KEY
 
 from boto.s3.connection import S3Connection
 from boto.exception import S3ResponseError, S3CreateError
