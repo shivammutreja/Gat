@@ -74,9 +74,16 @@ class CheckCredentials:
         user_coll.update({'user_id': user_hash}, {'$set': {'content': content}})
 
     @staticmethod
+    def save_user_video(user_hash, video_id):
+        user_coll.update({'user_id': user_hash}, {'$set': {'video_id': video_id}})
+
+    @staticmethod
     def get_videos(user_hash):
-        video_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['video_id']
-        return video_id
+        try:
+            video_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['video_id']
+            return video_id
+        except Exception,e:
+            print e
 
 
 
