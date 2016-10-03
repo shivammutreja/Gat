@@ -184,7 +184,7 @@ class ShowEditor(BaseHandler):
         CheckCredentials.save_user_task(user_hash, content)
 
 
-class UploadImage(tornado.web.RequestHandler):
+class UploadImage(BaseHandler):
 
     def get(self):
         # user = self.get_current_user()
@@ -201,6 +201,7 @@ class UploadImage(tornado.web.RequestHandler):
             fbody = f['body']
             print fname
             upload = yield self.upload(fbody, fname)
+            print upload
         # print 'uploaded' if upload else 'uploading'
         print 'bhag!'
 
@@ -209,7 +210,7 @@ class UploadImage(tornado.web.RequestHandler):
         s3_obj = AmazonS3(image_link=file_body, news_id=file_name)  
         raise tornado.gen.Return(s3_obj.run())
 
-class UploadVideo(tornado.web.RequestHandler):
+class UploadVideo(BaseHandler):
 
     def get(self):
         # user = self.get_current_user()
@@ -220,22 +221,31 @@ class UploadVideo(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def post(self):
         fileinfo = self.request.files['filearg']
+        user_hash = self.get_current_user().get('user_id')
         # ['filearg']
         for f in fileinfo:
             fname = f['filename']
             fpath = video_dir+fname
             fbody = f['body']
             print fname
-            new_file = open(video_dir+fname, 'a')
-            new_file.write(fbody)
-            new_file.close()
-            upload = yield self.upload_video(fpath, 'Fist Upload')
-        # print 'uploaded' if upload else 'uploading'
-        print 'bhag!'
+            new_file = open(video_dir+fname, 'ar+')
+            print new_file
+            if not new_file.read():
+                new_file.write(fbody)
+                new_file.close()
+                video_id = yield self.upload_video(fpath, 'Check chunk size')
+                self.redirect('/your_videos')
+                CheckCredentials.save_user_video(user_hash, video_id)
+            else:
+                self.write('the file already exists')
+
 
     @tornado.gen.coroutine
     def upload_video(self, file_path, title):
-        raise tornado.gen.coroutine(run_upload(file_path, title))
+        get_video_id = run_upload(file_path, title)
+        print get_video_id
+        raise tornado.gen.Return(get_video_id)
+
 
 class UserVideos(BaseHandler):
 

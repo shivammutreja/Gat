@@ -13,7 +13,13 @@
 
 	<title>Your Videos</title>
 	<body>
-	 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{video_id}}" frameborder="0" allowfullscreen></iframe>
+        {% if video_id %}
+        Please refresh the page if there is any playback error!
+        <br><br>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{video_id}}" frameborder="0" allowfullscreen></iframe>
+        {% else %}
+        You haven't uploaded any videos yet. <a href="/upload_video">Upload a video now.</a>
+        {% end %}
 	</body>
 
 </html>
