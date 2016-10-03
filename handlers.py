@@ -206,6 +206,10 @@ class UploadMedia(tornado.web.RequestHandler):
         raise tornado.gen.Return(s3_obj.run())
 
 
+class SignOut(tornado.web.RequestHandler):
+    def get(self, *args, **kwargs):
+        self.render('new_login.html')
+
 
 handlers = [
     (r"/register", RegisterUser),
@@ -214,6 +218,7 @@ handlers = [
     (r"/add_user", AddUser),
     (r"/editor", ShowEditor),
     (r'/upload', UploadMedia),
+    (r'/logout', SignOut)
 ]
 
 settings = dict(
@@ -236,7 +241,7 @@ def on_shutdown():
 def main():
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.bind("8000")
-    http_server.start(30)
+    http_server.start(10)
     loop = tornado.ioloop.IOLoop.instance()
     signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
     loop.start()
