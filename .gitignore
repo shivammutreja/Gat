@@ -6,6 +6,16 @@ __pycache__/
 # C extensions
 *.so
 
+#all media_files
+*.mp4
+*.mov
+
+#all secret_json
+*.json
+
+#credentials
+global_credentials.py
+
 # Distribution / packaging
 .Python
 env/

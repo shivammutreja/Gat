@@ -73,5 +73,10 @@ class CheckCredentials:
     def save_user_task(user_hash, content):
         user_coll.update({'user_id': user_hash}, {'$set': {'content': content}})
 
+    @staticmethod
+    def get_videos(user_hash):
+        video_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['video_id']
+        return video_id
+
 
 
