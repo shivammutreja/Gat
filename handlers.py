@@ -195,13 +195,15 @@ class UploadImage(BaseHandler):
     @tornado.gen.coroutine
     def post(self):
         fileinfo = self.request.files['filearg']
-        # ['filearg']
+        user_hash = self.get_current_user().get('user_id')
         for f in fileinfo:
             fname = f['filename']
             fbody = f['body']
             print fname
-            upload = yield self.upload(fbody, fname)
-            print upload
+            image = yield self.upload(fbody, fname)
+            image_id = image.get('hdpi', '')
+            CheckCredentials.save_user_image(user_hash, image_id)
+        self.redirect('/your_images')
         # print 'uploaded' if upload else 'uploading'
         print 'bhag!'
 
@@ -209,6 +211,17 @@ class UploadImage(BaseHandler):
     def upload(self, file_body, file_name):
         s3_obj = AmazonS3(image_link=file_body, news_id=file_name)  
         raise tornado.gen.Return(s3_obj.run())
+
+
+class UserImages(BaseHandler):
+
+    def get(self):
+        # user = self.get_current_user()
+        # print user
+        user_hash = self.get_current_user().get('user_id')
+        image_id = CheckCredentials.get_images(user_hash)
+        print image_id
+        self.render('user_images.html', image_id=image_id)
 
 class UploadVideo(BaseHandler):
 
@@ -260,7 +273,8 @@ class UserVideos(BaseHandler):
 
 class SignOut(tornado.web.RequestHandler):
     def get(self, *args, **kwargs):
-        self.render('new_login.html')
+        self.clear_cookie("user")
+        self.redirect('login')
 
 
 handlers = [
@@ -270,8 +284,11 @@ handlers = [
     (r"/add_user", AddUser),
     (r"/editor", ShowEditor),
     (r'/upload_image', UploadImage),
+    (r'/your_images', UserImages),
     (r'/upload_video', UploadVideo),
     (r'/your_videos', UserVideos),
+    (r'/logout', SignOut),
+
 ]
 
 settings = dict(

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{static_url('css/login.css')}}">
+    <script type="text/javascript" src="{{static_url('scripts/main.js')}}"></script>
+</head>
+
+	<title>Your Images</title>
+	<body>
+        {% if image_id %}
+            <br><br>
+            {% for image in image_id %}
+            <img src="{{image}}" alt="Smiley face">
+            {% end %}
+        {% else %}
+        You haven't uploaded any videos yet. <a href="/upload_image">Upload an image now.</a>
+        {% end %}
+	</body>
+
+</html>

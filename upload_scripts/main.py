@@ -171,7 +171,6 @@ def run_upload(file_name, title, description='', privacy='private'):
     try:
         print 'eew'
         video_id = initialize_upload(youtube, file_name, title, description, privacy)
-        print type(str(video_id)), "!"*10
         return str(video_id)
     except HttpError, e:
         print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
