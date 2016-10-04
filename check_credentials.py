@@ -78,10 +78,22 @@ class CheckCredentials:
         user_coll.update({'user_id': user_hash}, {'$set': {'video_id': video_id}})
 
     @staticmethod
+    def save_user_image(user_hash, image_id):
+        user_coll.update({'user_id': user_hash}, {'$addToSet': {'image_id': image_id}})
+
+    @staticmethod
     def get_videos(user_hash):
         try:
             video_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['video_id']
             return video_id
+        except Exception,e:
+            print e
+
+    @staticmethod
+    def get_images(user_hash):
+        try:
+            image_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['image_id']
+            return image_id
         except Exception,e:
             print e
 

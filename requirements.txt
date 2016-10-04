@@ -7,3 +7,4 @@ termcolor==1.1.0
 tornado==4.0.2 
 tree==0.1.0
 beautifulsoup4==4.5.1
+google-api-python-client==1.5.3
