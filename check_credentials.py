@@ -42,7 +42,7 @@ class CheckCredentials:
 
         coll.update({'user_id': hod_user_hash}, {'$addToSet': {'users':\
             {'user_name': user_name, 'user_email': user_email, 'chapter':\
-            chapter}}})
+            chapter, 'status': 'pending'}}})
         print 'some chudap'
 
         user_hash = hashlib.md5(user_name).hexdigest()
@@ -50,7 +50,7 @@ class CheckCredentials:
 
         user_coll.update({'user_id': user_hash, 'password': pass_hash}, {'$set':\
         {'user_name': user_name, 'user_age': user_age, 'user_email':\
-        user_email, 'chapter': chapter}}, upsert=True)
+        user_email, 'chapter': chapter, 'status': 'pending'}}, upsert=True)
 
     @staticmethod
     def get_users(hod_user_hash):
@@ -72,6 +72,15 @@ class CheckCredentials:
     @staticmethod
     def save_user_task(user_hash, content):
         user_coll.update({'user_id': user_hash}, {'$set': {'content': content}})
+        return
+
+    @staticmethod
+    def get_user_task(user_hash):
+        try:
+            content = user_coll.find_one({'user_id': user_hash}, {'_id': False})['content']
+            return content
+        except Exception,e:
+            print e
 
     @staticmethod
     def save_user_video(user_hash, video_id):
