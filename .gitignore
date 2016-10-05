@@ -9,6 +9,7 @@ __pycache__/
 #all media_files
 *.mp4
 *.mov
+*.pdf
 
 #all secret_json
 *.json
