@@ -15,10 +15,10 @@
         {% if image_id %}
             <br><br>
             {% for image in image_id %}
-            <img src="{{image}}" alt="Smiley face">
+                <img src="{{image}}" style="width:500px; height:560px;" alt="Smiley face">
             {% end %}
         {% else %}
-        You haven't uploaded any videos yet. <a href="/upload_image">Upload an image now.</a>
+        You haven't uploaded any image yet. <a href="/upload_image">Upload an image now.</a>
         {% end %}
 	</body>
 

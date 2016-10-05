@@ -87,8 +87,12 @@ class CheckCredentials:
         user_coll.update({'user_id': user_hash}, {'$set': {'video_id': video_id}})
 
     @staticmethod
-    def save_user_image(user_hash, image_id):
-        user_coll.update({'user_id': user_hash}, {'$addToSet': {'image_id': image_id}})
+    def save_user_doc(user_hash, doc_id):
+        if doc_id.endswith('.pdf'):
+            user_coll.update({'user_id': user_hash}, {'$addToSet': {'file_id': doc_id}})
+        else:
+            user_coll.update({'user_id': user_hash}, {'$addToSet': {'image_id': doc_id}})
+            
 
     @staticmethod
     def get_videos(user_hash):
@@ -103,6 +107,14 @@ class CheckCredentials:
         try:
             image_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['image_id']
             return image_id
+        except Exception,e:
+            print e
+
+    @staticmethod
+    def get_files(user_hash):
+        try:
+            file_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['file_id']
+            return file_id
         except Exception,e:
             print e
 
