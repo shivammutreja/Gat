@@ -169,19 +169,30 @@ class AddUser(BaseHandler):
 
 class ShowEditor(BaseHandler):
 
+    @asynchronous
+    @tornado.gen.coroutine
     def get(self):
         user = self.get_current_user()
-        print user
-        content = user.get('content') if 'content' in user.keys() else None
+        content = yield self.get_user_content(user.get('user_id'))
         self.render('test_editor.html', content=content)
 
+    @tornado.gen.coroutine
+    def get_user_content(self, user_hash):
+        raise tornado.gen.Return(CheckCredentials.get_user_task(user_hash))
 
+    @asynchronous
+    @tornado.gen.coroutine
     def post(self):
         user_hash = self.get_current_user().get('user_id')
-        content = self.get_body_argument("editor1", default=None, strip=False)
+        content = self.get_argument("editor1", default=None, strip=False)
         # content = self.get_argument('editor1')
         # print content
-        CheckCredentials.save_user_task(user_hash, content)
+        yield self.save_user_content(user_hash, content)
+        self.redirect('/dashboard')
+
+    @tornado.gen.coroutine
+    def save_user_content(self, user_hash, content):
+        raise tornado.gen.Return(CheckCredentials.save_user_task(user_hash, content))
 
 
 class UploadImage(BaseHandler):
