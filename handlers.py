@@ -10,6 +10,7 @@ from tornado.web import asynchronous
 import signal
 
 import json
+import functools
 from blessings import Terminal
 from check_credentials import CheckCredentials
 from upload_scripts.amazon_s3 import AmazonS3
@@ -21,9 +22,15 @@ terminal = Terminal()
 
 class BaseHandler(tornado.web.RequestHandler):
 
+    def set_default_headers(self):
+        self.set_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.set_header('Pragma', 'no-cache')
+        self.set_header('Expires', '0')
+        
     @asynchronous
     def get_login_url(self):
         return "/login"
+
 
     def get_current_user(self):
         user_json = self.get_secure_cookie("user")
@@ -80,6 +87,7 @@ class GetUser(BaseHandler):
 
     @asynchronous
     def post(self):
+
         login_response = {}
 
         email_address = self.get_argument('uname', '')
@@ -109,11 +117,12 @@ class GetUser(BaseHandler):
             # print login_response
 
     def set_current_user(self, username):
+
         # print "setting "+username['name']
         if username:
-          self.set_secure_cookie("user", tornado.escape.json_encode(username))
+            self.set_secure_cookie("user", tornado.escape.json_encode(username))
         else:
-          self.clear_cookie("user")
+            self.clear_cookie("user")
 
 
 class UserDashboard(BaseHandler):
@@ -210,11 +219,11 @@ class UploadImage(BaseHandler):
         for f in fileinfo:
             fname = f['filename']
             fbody = f['body']
-            print fname
+            # print fbody, '@!@!@!@!'
             image = yield self.upload(fbody, fname)
-            image_id = image.get('hdpi', '')
-            CheckCredentials.save_user_image(user_hash, image_id)
-        self.redirect('/your_images')
+            doc_id = image.get('hdpi', '')
+            CheckCredentials.save_user_doc(user_hash, doc_id)
+        self.redirect('/dashboard')
         # print 'uploaded' if upload else 'uploading'
         print 'bhag!'
 
@@ -231,8 +240,16 @@ class UserImages(BaseHandler):
         # print user
         user_hash = self.get_current_user().get('user_id')
         image_id = CheckCredentials.get_images(user_hash)
-        print image_id
         self.render('user_images.html', image_id=image_id)
+
+class UserFiles(BaseHandler):
+
+    def get(self):
+        # user = self.get_current_user()
+        # print user
+        user_hash = self.get_current_user().get('user_id')
+        doc_id = CheckCredentials.get_files(user_hash)
+        self.render('user_files.html', doc_id=doc_id)
 
 class UploadVideo(BaseHandler):
 
@@ -282,10 +299,11 @@ class UserVideos(BaseHandler):
         self.render('watch_video.html', video_id=video_id)
 
 
-class SignOut(tornado.web.RequestHandler):
-    def get(self, *args, **kwargs):
+class SignOut(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
         self.clear_cookie("user")
-        self.redirect('login')
+        self.redirect(self.get_argument("next", "/login"))
 
 
 handlers = [
@@ -296,6 +314,7 @@ handlers = [
     (r"/editor", ShowEditor),
     (r'/upload_image', UploadImage),
     (r'/your_images', UserImages),
+    (r'/your_files', UserFiles),
     (r'/upload_video', UploadVideo),
     (r'/your_videos', UserVideos),
     (r'/logout', SignOut),
@@ -306,6 +325,7 @@ settings = dict(
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         cookie_secret="cookie_secret",
+        login_url="/login"
 )
 
 app = tornado.web.Application(handlers, **settings)
