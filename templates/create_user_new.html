@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" href="{{static_url('css/login.css')}}">
-</head>
+{% extends "index_hod.html" %}
+
+{% block content %}
+
 <div class="container">
     <form action="add_user" method="post" id="registration_form">
         <label><b>Email</b></label>
@@ -31,4 +30,5 @@
         </div>
     </form>
 </div>
-</html>
+
+{% end %}
