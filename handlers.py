@@ -157,7 +157,7 @@ class UserDashboard(BaseHandler):
 class AddUser(BaseHandler):
 
     def get(self):
-        self.render('create_user.html')
+        self.render('create_user_new.html')
 
     @tornado.gen.coroutine
     def post(self):
@@ -300,10 +300,14 @@ class UserVideos(BaseHandler):
 
 
 class SignOut(BaseHandler):
-    @tornado.web.authenticated
+    # @tornado.web.authenticated
     def get(self):
         self.clear_cookie("user")
-        self.redirect(self.get_argument("next", "/login"))
+        self.redirect('/login')
+
+class Try(BaseHandler):
+    def get(self):
+        self.render("try_jq.html")
 
 
 handlers = [
@@ -318,6 +322,7 @@ handlers = [
     (r'/upload_video', UploadVideo),
     (r'/your_videos', UserVideos),
     (r'/logout', SignOut),
+    (r'/test', Try),
 
 ]
 

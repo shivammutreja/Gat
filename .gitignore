@@ -12,6 +12,9 @@ __pycache__/
 *.pdf
 files_to_upload/
 
+#all backup files
+backup_files/
+
 #all secret_json
 *.json
 
