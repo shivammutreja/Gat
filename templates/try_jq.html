@@ -11,6 +11,7 @@
 </head>
 <body>
     <a href="http://jquery.com/">jQuery</a>
+    <button class="button" type="submit">Final submission</button>
     <script src="{{static_url('scripts/jquery.js')}}"></script>
     <script>
  
@@ -20,6 +21,11 @@
 	    event.preventDefault();
 	    $(this).animate();
         });
+	$( "button" ).click(function( event ) {
+		$.getJSON( "{{static_url('test.py')}}", function( data ) {
+			console.log( data );
+		});
+	});
     });
  
     </script>
