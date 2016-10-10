@@ -64,7 +64,7 @@ class CheckCredentials:
     def get_user_tasks(user_hash):
         try:
             tasks = user_coll.find_one({'user_id': user_hash}, {'_id':\
-            False})['chapter']
+            False})
             return tasks
         except Exception,e:
             print e
@@ -73,6 +73,18 @@ class CheckCredentials:
     def save_user_task(user_hash, content):
         user_coll.update({'user_id': user_hash}, {'$set': {'content': content}})
         return
+
+    """
+    This method sets the status to 'under review' after the user clicks on 'final submission' button
+    """
+    @staticmethod
+    def final_user_submission(user_hash, content, user_email):
+        user_coll.update({'user_id': user_hash}, {'$set': {'content': content, 'status': \
+            'Under Review'}})
+
+        coll.update({'users.user_email': user_email}, {'$set': {'users.$.status': 'for review'}})
+        return
+
 
     @staticmethod
     def get_user_task(user_hash):

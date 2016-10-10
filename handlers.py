@@ -129,12 +129,13 @@ class UserDashboard(BaseHandler):
 
     @tornado.gen.coroutine
     def get(self):
-        print self.get_current_user()
+        if not self.get_current_user():
+            self.redirect('/login')
         entry = self.get_current_user()
         users_or_tasks = yield self.get_users_or_tasks(entry)
         view = yield self.get_if_hod(entry)
         print view
-        self.render(view, user=entry, users=users_or_tasks)
+        self.render(view, users=users_or_tasks)
 
     @tornado.gen.coroutine
     def get_if_hod(self, entry):
@@ -157,7 +158,11 @@ class UserDashboard(BaseHandler):
 class AddUser(BaseHandler):
 
     def get(self):
-        self.render('create_user_new.html')
+        if not self.get_current_user():
+            self.redirect('/login')
+        else:
+            self.hod_user_hash = self.get_current_user().get('user_id')
+            self.render('create_user_new.html')
 
     @tornado.gen.coroutine
     def post(self):
@@ -167,9 +172,8 @@ class AddUser(BaseHandler):
         name = self.get_argument('name', '')
         age = self.get_argument('age', '')
         chapter = self.get_argument('chapter')
-        hod_user_hash = self.get_current_user().get('user_id')
 
-        CheckCredentials.save_user(hod_user_hash, name, age,\
+        CheckCredentials.save_user(self.hod_user_hash, name, age,\
         email_address, password, chapter)
         print 'let\'s check'
 
@@ -193,15 +197,22 @@ class ShowEditor(BaseHandler):
     @tornado.gen.coroutine
     def post(self):
         user_hash = self.get_current_user().get('user_id')
+        user_email = self.get_current_user().get('user_email')
         content = self.get_argument("editor1", default=None, strip=False)
-        # content = self.get_argument('editor1')
-        # print content
-        yield self.save_user_content(user_hash, content)
+        if self.get_body_argument('draft', default=None):
+            print 'draft hai!'
+            yield self.save_user_content(user_hash, content)
+        else:
+            yield self.send_user_content_for_review(user_hash, content, user_email)
         self.redirect('/dashboard')
 
     @tornado.gen.coroutine
     def save_user_content(self, user_hash, content):
         raise tornado.gen.Return(CheckCredentials.save_user_task(user_hash, content))
+
+    @tornado.gen.coroutine
+    def send_user_content_for_review(self, user_hash, content, user_email):
+        raise tornado.gen.Return(CheckCredentials.final_user_submission(user_hash, content, user_email))
 
 
 class UploadImage(BaseHandler):
@@ -238,18 +249,24 @@ class UserImages(BaseHandler):
     def get(self):
         # user = self.get_current_user()
         # print user
-        user_hash = self.get_current_user().get('user_id')
-        image_id = CheckCredentials.get_images(user_hash)
-        self.render('user_images.html', image_id=image_id)
+        if not self.get_current_user():
+            self.redirect('/login')
+        else:
+            user_hash = self.get_current_user().get('user_id')
+            image_id = CheckCredentials.get_images(user_hash)
+            self.render('user_images.html', image_id=image_id)
 
 class UserFiles(BaseHandler):
 
     def get(self):
         # user = self.get_current_user()
         # print user
-        user_hash = self.get_current_user().get('user_id')
-        doc_id = CheckCredentials.get_files(user_hash)
-        self.render('user_files.html', doc_id=doc_id)
+        if not self.get_current_user():
+            self.redirect('/login')
+        else:
+            user_hash = self.get_current_user().get('user_id')
+            doc_id = CheckCredentials.get_files(user_hash)
+            self.render('user_files.html', doc_id=doc_id)
 
 class UploadVideo(BaseHandler):
 
@@ -293,10 +310,13 @@ class UserVideos(BaseHandler):
     def get(self):
         # user = self.get_current_user()
         # print user
-        user_hash = self.get_current_user().get('user_id')
-        video_id = CheckCredentials.get_videos(user_hash)
-        print video_id
-        self.render('watch_video.html', video_id=video_id)
+        if not self.get_current_user():
+            self.redirect('/login')
+        else:
+            user_hash = self.get_current_user().get('user_id')
+            video_id = CheckCredentials.get_videos(user_hash)
+            print video_id
+            self.render('watch_video.html', video_id=video_id)
 
 
 class SignOut(BaseHandler):

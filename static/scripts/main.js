@@ -1,5 +1,5 @@
-var myImage = document.querySelector('input');
-
+/*var myImage = document.querySelector('input');
+*/
 /*localStorage.clear()
 
 myImage.onclick = function() {
@@ -15,6 +15,19 @@ function showDiv() {
     document.getElementById('welcome').style.display = "block";
 }
 
+
+/*function refresh() {
+	var e=document.getElementById("refreshed");
+	if(e.value=="no");e.value="yes";
+	else{e.value="no";location.reload();}
+	console.log(e.value);
+}*/
+
+/*onload=function(){
+var e=document.getElementById("refreshed");
+if(e.value=="no")e.value="yes";
+else{e.value="no";location.reload();}
+*/
 //personalized welcome page
 
 /*
