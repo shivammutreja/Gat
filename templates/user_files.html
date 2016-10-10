@@ -1,0 +1,14 @@
+{% extends "index_user.html" %}
+
+{% block content %}
+
+	<title>Your Files</title>
+    {% if doc_id %}
+        <br><br>
+        {% for doc in doc_id %}
+            <iframe src="http://docs.google.com/gview?url={{doc}}&embedded=true" style="width:780px; height:800px;" frameborder="0"></iframe>
+        {% end %}
+    {% else %}
+    You haven't uploaded any files yet. <a href="/upload_image">Upload a file now.</a>
+    {% end %}
+{% end %}

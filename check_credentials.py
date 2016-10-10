@@ -42,7 +42,7 @@ class CheckCredentials:
 
         coll.update({'user_id': hod_user_hash}, {'$addToSet': {'users':\
             {'user_name': user_name, 'user_email': user_email, 'chapter':\
-            chapter}}})
+            chapter, 'status': 'pending'}}})
         print 'some chudap'
 
         user_hash = hashlib.md5(user_name).hexdigest()
@@ -50,7 +50,7 @@ class CheckCredentials:
 
         user_coll.update({'user_id': user_hash, 'password': pass_hash}, {'$set':\
         {'user_name': user_name, 'user_age': user_age, 'user_email':\
-        user_email, 'chapter': chapter}}, upsert=True)
+        user_email, 'chapter': chapter, 'status': 'pending'}}, upsert=True)
 
     @staticmethod
     def get_users(hod_user_hash):
@@ -64,7 +64,7 @@ class CheckCredentials:
     def get_user_tasks(user_hash):
         try:
             tasks = user_coll.find_one({'user_id': user_hash}, {'_id':\
-            False})['chapter']
+            False})
             return tasks
         except Exception,e:
             print e
@@ -72,14 +72,39 @@ class CheckCredentials:
     @staticmethod
     def save_user_task(user_hash, content):
         user_coll.update({'user_id': user_hash}, {'$set': {'content': content}})
+        return
+
+    """
+    This method sets the status to 'under review' after the user clicks on 'final submission' button
+    """
+    @staticmethod
+    def final_user_submission(user_hash, content, user_email):
+        user_coll.update({'user_id': user_hash}, {'$set': {'content': content, 'status': \
+            'Under Review'}})
+
+        coll.update({'users.user_email': user_email}, {'$set': {'users.$.status': 'for review'}})
+        return
+
+
+    @staticmethod
+    def get_user_task(user_hash):
+        try:
+            content = user_coll.find_one({'user_id': user_hash}, {'_id': False})['content']
+            return content
+        except Exception,e:
+            print e
 
     @staticmethod
     def save_user_video(user_hash, video_id):
         user_coll.update({'user_id': user_hash}, {'$set': {'video_id': video_id}})
 
     @staticmethod
-    def save_user_image(user_hash, image_id):
-        user_coll.update({'user_id': user_hash}, {'$addToSet': {'image_id': image_id}})
+    def save_user_doc(user_hash, doc_id):
+        if doc_id.endswith('.pdf'):
+            user_coll.update({'user_id': user_hash}, {'$addToSet': {'file_id': doc_id}})
+        else:
+            user_coll.update({'user_id': user_hash}, {'$addToSet': {'image_id': doc_id}})
+            
 
     @staticmethod
     def get_videos(user_hash):
@@ -94,6 +119,14 @@ class CheckCredentials:
         try:
             image_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['image_id']
             return image_id
+        except Exception,e:
+            print e
+
+    @staticmethod
+    def get_files(user_hash):
+        try:
+            file_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['file_id']
+            return file_id
         except Exception,e:
             print e
 

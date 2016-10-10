@@ -9,6 +9,11 @@ __pycache__/
 #all media_files
 *.mp4
 *.mov
+*.pdf
+files_to_upload/
+
+#all backup files
+backup_files/
 
 #all secret_json
 *.json

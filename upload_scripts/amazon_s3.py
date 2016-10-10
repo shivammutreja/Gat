@@ -11,6 +11,7 @@ import PIL
 import base64
 import requests
 file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+files_dir = file_path+'/files_to_upload/'
 sys.path.append(file_path)
 from global_credentials import S3_BUCKET_NAME, AMAZON_SECRET_KEY, AMAZON_ACCESS_KEY
 
@@ -21,13 +22,15 @@ from boto.exception import S3ResponseError, S3CreateError
 class AmazonS3(object):
     def __init__(self, image_link, news_id):
         self.image_link = image_link
-        self.image_format = "png"
+        # self.image_format = "png"
         self.news_id = news_id
 
         self.ldpi_size = (240, 320)
         self.mdpi_size = (320, 480)
         self.hdpi_size = (480, 800)
         self.xhdpi_size = (640, 960)
+        self.image_format = 'JPEG' if self.news_id.split('.')[1] == 'jpg' \
+        else self.news_id.split('.')[1]
 
 
     def amazon_bucket(self):
@@ -53,9 +56,13 @@ class AmazonS3(object):
         self.bucket = self.amazon_bucket()
         print self.bucket
         self.download_image()
-        self.make_resolutions()
-        self.encode_images()
-        return {"mdpi": self.mdpi_image_url,
+        if not self.image_format == 'pdf':
+            self.make_resolutions()
+            self.encode_images()
+        else:
+            self.encode_files()
+
+        return {
                 "hdpi": self.hdpi_image_url,
                 }
 
@@ -67,11 +74,14 @@ class AmazonS3(object):
             # response = urllib.urlopen(self.image_link)
             # source = response.read()
             self.img = Image.open(StringIO(self.image_link))
+            print self.image_format,'!'*10
+            print 'here I am!'
         except Exception as e:
             print "opening file"
-            f = open(self.image_link)
-            source = f.read()
-            self.img = Image.open(StringIO(source))
+            self.f = open(files_dir+self.news_id, 'ar+')
+            self.f.write(self.image_link)
+            self.f.close()
+            print self.image_format
             # goose_instance = goose.Goose()
             # g = goose_instance.extract(self.image_link)
             # self.img  = Image.open(StringIO(g.raw_html))
@@ -82,11 +92,6 @@ class AmazonS3(object):
         """
         converts the image link to byte 64 encoding
         """
-
-        wpercent = (self.mdpi_size[0]/float(self.img.size[0]))
-        hsize = int((float(self.img.size[1])*float(wpercent)))
-        self.img_mdpi = self.img.resize((self.mdpi_size[0], hsize), Image.ANTIALIAS)
-
 
         wpercent = (self.hdpi_size[0]/float(self.img.size[0]))
         hsize = int((float(self.img.size[1])*float(wpercent)))
@@ -102,15 +107,6 @@ class AmazonS3(object):
         """
 
         output = StringIO()
-        self.img_mdpi.save(output, self.image_format,optimize=True,quality=65)
-        key = self.news_id + "_mdpi.png"
-        mdpi_key = self.bucket.new_key(key)
-        mdpi_key.set_metadata('Content-Type', 'image/png')
-        mdpi_key.set_contents_from_string(output.getvalue())
-        mdpi_key.set_canned_acl('public-read')
-        self.mdpi_image_url = mdpi_key.generate_url(0, query_auth=False, force_http=True)
-
-        output = StringIO()
         self.img_hdpi.save(output, self.image_format,optimize=True,quality=65)
         key = self.news_id + "_hdpi.png"
         hdpi_key = self.bucket.new_key(key)
@@ -119,6 +115,21 @@ class AmazonS3(object):
         hdpi_key.set_canned_acl('public-read')
         self.hdpi_image_url = hdpi_key.generate_url(0, query_auth=False, force_http=True)
 
+        return
+
+    def encode_files(self):
+        """
+        converts the image to different resolutions
+        hdpi, mdpi, xdpi
+        """
+        self.f = open(files_dir+self.news_id, 'r')
+        output = self.f.read()
+        key = self.news_id
+        hdpi_key = self.bucket.new_key(key)
+        hdpi_key.set_metadata('Content-Type', 'application/pdf')
+        hdpi_key.set_contents_from_string(output)
+        hdpi_key.set_canned_acl('public-read')
+        self.hdpi_image_url = hdpi_key.generate_url(0, query_auth=False, force_http=True)
 
         return
 

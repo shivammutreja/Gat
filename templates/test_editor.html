@@ -13,13 +13,16 @@
             <textarea name="editor1">Write content here!</textarea>
             {% end %}
             <br>
-            <button class="button" type="submit">Submit</button>
+            <button class="button" type="submit" name='draft' value='draft'>Save as draft</button>
+            <button class="button" type="submit" name='final' value='final'>Final submission</button>
         </form>
         <script>
+
+
+
 		CKEDITOR.replace( 'editor1', {
-   // filebrowserBrowseUrl: '/browser/browse.php',
-    filebrowserUploadUrl: "{{static_url('amazon_s3.py')}}"
-});
+   
+    });
         </script>
     </body>
 </html>
