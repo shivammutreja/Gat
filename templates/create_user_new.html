@@ -1,34 +1,55 @@
 {% extends "index_hod.html" %}
 
 {% block content %}
-
 <div class="container">
-    <form action="add_user" method="post" id="registration_form">
-        <label><b>Email</b></label>
-        <input type="username" placeholder="Enter Email" name="email" required>
-
-        <label><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
-
-        <label><b>Name</b></label>
-        <input type="name" placeholder="Enter Username" name="name" required>
-
-        <label><b>Age</b></label>
-        <input type="age" placeholder="Enter Age" name="age" required>
-
-        <label><b>Assign a chapter</b></label>
-        <select id="chapters" name="chapter">
-          <option value="chapter_1">Chapter 1</option>
-          <option value="chapter_2">Chapter 2</option>
-        </select>
-        <br></br>
-
-        <button type="submit">Add User</button>
-
-        <div class="container" style="background-color:#f1f1f1">
-          <button type="button" class="cancelbtn">Cancel</button>
-        </div>
-    </form>
-</div>
-
+            <form class="form-horizontal" role="form" action="add_user" id="registration_form" method="post">
+                <h2>Registration Form</h2>
+                <div class="form-group">
+                    <label for="firstName" class="col-sm-3 control-label">Full Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="name" id="firstName" placeholder="Full Name" class="form-control" autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" name="email" id="email" placeholder="Email" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-3 control-label">Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate" class="col-sm-3 control-label">Date of Birth</label>
+                    <div class="col-sm-9">
+                        <input type="date" name="birthDate" id="birthDate" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Gender</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="radio-inline">
+                                    <input type="radio" id="femaleRadio" value="Female">Female
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline">
+                                    <input type="radio" id="maleRadio" value="Male">Male
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /.form-group -->
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                </div>
+            </form> <!-- /form -->
+        </div> <!-- ./container -->
 {% end %}
