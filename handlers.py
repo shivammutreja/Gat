@@ -26,7 +26,7 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         self.set_header('Pragma', 'no-cache')
         self.set_header('Expires', '0')
-        
+
     @asynchronous
     def get_login_url(self):
         return "/login"
@@ -57,12 +57,12 @@ class RegisterUser(BaseHandler):
 
         if not email_address:
             login_response.update({
-                'success': False, 
+                'success': False,
                 'msg': 'Please enter your email address.'
             })
         elif not password:
             login_response.update({
-                'success': False, 
+                'success': False,
                 'msg': 'Please enter your password.'
             })
         else:
@@ -74,7 +74,7 @@ class RegisterUser(BaseHandler):
         #     response = {'success': True, 'msg': 'You have been registered successfully'}\
         #                 if not register else {'success': True, 'msg': \
         #                 'This email_id has already been registered'}
-                
+
         #     login_response.update(response)
 
         # self.write(login_response)
@@ -92,15 +92,15 @@ class GetUser(BaseHandler):
 
         email_address = self.get_argument('uname', '')
         password = self.get_argument('psw', '')
-        
+
         if not email_address:
             login_response.update({
-                'success': False, 
+                'success': False,
                 'msg': 'Please enter your email address.'
             })
         elif not password:
             login_response.update({
-                'success': False, 
+                'success': False,
                 'msg': 'Please enter your password.'
             })
         else:
@@ -112,7 +112,7 @@ class GetUser(BaseHandler):
                 self.redirect('/login')
             # response = {'success': True, 'msg': 'Hi '+ user['user'].split('@')[0]} \
             # if user else {'success': True, 'msg': 'No user found'}
-            
+
             # login_response.update(response)
             # print login_response
 
@@ -167,14 +167,16 @@ class AddUser(BaseHandler):
     @tornado.gen.coroutine
     def post(self):
 
+        self.hod_user_hash = self.get_current_user().get('user_id')
         email_address = self.get_argument('email', '')
         password = self.get_argument('password', '')
         name = self.get_argument('name', '')
-        age = self.get_argument('age', '')
-        chapter = self.get_argument('chapter')
-
-        CheckCredentials.save_user(self.hod_user_hash, name, age,\
-        email_address, password, chapter)
+        # age = self.get_argument('age', '')
+        birthdate = self.get_argument('birthDate', '')
+        # chapter = self.get_argument('chapter')
+        print self.hod_user_hash
+        CheckCredentials.save_user(self.hod_user_hash, name,\
+        email_address, password, birthdate)
         print 'let\'s check'
 
         self.redirect('/dashboard')
@@ -240,7 +242,7 @@ class UploadImage(BaseHandler):
 
     @tornado.gen.coroutine
     def upload(self, file_body, file_name):
-        s3_obj = AmazonS3(image_link=file_body, news_id=file_name)  
+        s3_obj = AmazonS3(image_link=file_body, news_id=file_name)
         raise tornado.gen.Return(s3_obj.run())
 
 
@@ -318,6 +320,18 @@ class UserVideos(BaseHandler):
             print video_id
             self.render('watch_video.html', video_id=video_id)
 
+class AssignTask(BaseHandler):
+
+    def get(self):
+        if not self.get_current_user():
+            self.redirect('/login')
+        else:
+            available_users = CheckCredentials.get_complete_users()
+            self.render('assign_task.html', users=available_users)
+
+    # def post(self):
+
+
 
 class SignOut(BaseHandler):
     # @tornado.web.authenticated
@@ -341,6 +355,7 @@ handlers = [
     (r'/your_files', UserFiles),
     (r'/upload_video', UploadVideo),
     (r'/your_videos', UserVideos),
+    (r'/assign_task', AssignTask),
     (r'/logout', SignOut),
     (r'/test', Try),
 
@@ -365,9 +380,14 @@ def on_shutdown():
 
 
 def main():
+    # sockets = tornado.netutil.bind_sockets(8000)
+    # tornado.process.fork_processes(10)
+    # http_server = tornado.httpserver.HTTPServer(app, max_body_size=200 * 1024 * 1024)
+    # http_server.add_sockets(sockets)
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.bind("8000")
     http_server.start(10)
+    # app.listen('8000')
     loop = tornado.ioloop.IOLoop.instance()
     signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
     loop.start()

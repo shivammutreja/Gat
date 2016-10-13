@@ -1,15 +1,14 @@
-/*var myImage = document.querySelector('input');
-*/
-/*localStorage.clear()
-
-myImage.onclick = function() {
-    var mySrc = myImage.getAttribute('src');
-    if(mySrc === 'images/hannah_reid_3.jpg') {
-      myImage.setAttribute ('src','images/hannah_reid_1.jpg');
-    } else {
-      myImage.setAttribute ('src','images/hannah_reid_3.jpg');
-    }
-}*/
+function makeReadOnly() {
+	/*var myText = document.getElementById("myEditor");
+	console.log(myText);
+	if (myText.hasAttribute("readonly")) {
+		console.log('already there');
+	}
+	else {
+		myText.setAttribute("readonly", "true");
+	}*/
+	document.getElementById("myEditor").readOnly = true;
+}
 
 function showDiv() {
     document.getElementById('welcome').style.display = "block";
