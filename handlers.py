@@ -326,12 +326,15 @@ class AssignTask(BaseHandler):
         if not self.get_current_user():
             self.redirect('/login')
         else:
-            available_users = CheckCredentials.get_complete_users()
+            user_hash = self.get_current_user().get('user_id')
+            available_users = CheckCredentials.get_available_users(user_hash)
             self.render('assign_task.html', users=available_users)
 
-    # def post(self):
-
-
+    def post(self):
+        assigned_to = self.get_argument('select-user')
+        task = self.get_argument('select-chapter')
+        print assigned_to, task
+        self.redirect('/dashboard')
 
 class SignOut(BaseHandler):
     # @tornado.web.authenticated

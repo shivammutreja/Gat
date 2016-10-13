@@ -3,27 +3,31 @@
 {% block content %}
 <div class="container-fluid">
   <br>
+  <form name="assign" action="assign_task" method="post">
   <div class="row">
     <div class="dropdown col-sm-3 col-sm-offset-3">
-      <select class="form-control">
+      <select class="form-control" name="select-user">
         <option selected disabled>User</option>
         {% if users %}
           {% for user in users %}
-          <option value="one">{{user.get('user_name', '')}}</option>
+          <option value={{user.get('user_name', '')}}>{{user.get('user_name', '')}}</option>
           {% end %}
         {% end %}
       </select>
     </div>
     <div class="dropdown col-sm-3">
-      <select class="form-control">
+      <select class="form-control" name="select-chapter">
         <option selected disabled>Chapter</option>
         {% if users %}
           {% for user in range(1,11) %}
-          <option value="one">Chapter {{user}}</option>
+          <option value="Chapter {{user}}">Chapter {{user}}</option>
           {% end %}
         {% end %}
       </select>
     </div>
   </div>
+  <br><br>
+    <center><button type="submit" class="btn btn-primary">Assign</button></center>
+  </form>
 </div>
 {% end %}
