@@ -131,9 +131,12 @@ class CheckCredentials:
             print e
 
     @staticmethod
-    def get_complete_users():
+    def get_available_users(hod_user_hash):
         try:
-            users = list(user_coll.find({'status': 'complete'}, {'_id': False}))
-            return users
+            users = coll.find({'$and': [{'user_id': hod_user_hash}, {'$or': \
+            [{'users.$.status': 'complete'}, {'users.$.status': {'$exists': \
+            False}}]}]}, {'users': True, '_id': False})
+            # users = list(user_coll.find({'$or': [{'status': 'complete'}, {'status': {'$exists': False}}]}, {'_id': False}))
+            return users[0]['users']
         except Exception,e:
             print e
