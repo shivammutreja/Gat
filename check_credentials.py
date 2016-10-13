@@ -33,7 +33,7 @@ class CheckCredentials:
             	types.get(user_type, '')})
 
     @staticmethod
-    def save_user(hod_user_hash, user_name, user_age, user_email, password, chapter):
+    def save_user(hod_user_hash, user_name, user_email, password, birthdate):
 
         # if coll.find_one({'user_id': hod_user_hash})['users']['chapter']:
         # 	return True
@@ -41,16 +41,16 @@ class CheckCredentials:
         	# hod_user_hash = hashlib.md5(hod_user_name).hexdigest()
 
         coll.update({'user_id': hod_user_hash}, {'$addToSet': {'users':\
-            {'user_name': user_name, 'user_email': user_email, 'chapter':\
-            chapter, 'status': 'pending'}}})
+            {'user_name': user_name, 'user_email': user_email, 'birthdate':\
+            birthdate,}}})
         print 'some chudap'
 
         user_hash = hashlib.md5(user_name).hexdigest()
         pass_hash = hashlib.md5(password).hexdigest()
 
         user_coll.update({'user_id': user_hash, 'password': pass_hash}, {'$set':\
-        {'user_name': user_name, 'user_age': user_age, 'user_email':\
-        user_email, 'chapter': chapter, 'status': 'pending'}}, upsert=True)
+        {'user_name': user_name, 'user_birthdate': birthdate, 'user_email':\
+        user_email,}}, upsert=True)
 
     @staticmethod
     def get_users(hod_user_hash):
@@ -104,7 +104,7 @@ class CheckCredentials:
             user_coll.update({'user_id': user_hash}, {'$addToSet': {'file_id': doc_id}})
         else:
             user_coll.update({'user_id': user_hash}, {'$addToSet': {'image_id': doc_id}})
-            
+
 
     @staticmethod
     def get_videos(user_hash):
@@ -130,5 +130,10 @@ class CheckCredentials:
         except Exception,e:
             print e
 
-
-
+    @staticmethod
+    def get_complete_users():
+        try:
+            users = list(user_coll.find({'status': 'complete'}, {'_id': False}))
+            return users
+        except Exception,e:
+            print e

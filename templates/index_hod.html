@@ -11,13 +11,16 @@
       <link rel="icon" href="{{static_url ('favicon.png')}}">
 
       <title>Dashboard Template for Bootstrap</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
       <!-- Bootstrap core CSS -->
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
       <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
       <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-      <link rel="stylesheet" href="{{static_url('css/login.css')}}">
 
       <!-- Custom styles for this template -->
       <link href="{{static_url('css/dashboard.css')}}" rel="stylesheet">
@@ -26,6 +29,8 @@
       <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
       <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
       <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
       <!--[if lt IE 9]>
@@ -65,7 +70,7 @@
           <ul class="nav nav-sidebar">
             <li><a href="/dashboard">Dashboard</a></li>
             <li><a href="/add_user">Add User</a></li>
-            <li><a href="#">Analytics</a></li>
+            <li><a href="/assign_task">Assign Task</a></li>
             <li><a href="#">Export</a></li>
           </ul>
           <ul class="nav nav-sidebar">
@@ -76,14 +81,10 @@
             <li><a href="">More navigation</a></li>
           </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
-        {% block content %}
-        {% end %}
-
-        </div>
       </div>
     </div>
+    {% block content %}
+    {% end %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -95,6 +96,6 @@
     <script src="../../assets/js/vendor/holder.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    
+
   </body>
 </html>
