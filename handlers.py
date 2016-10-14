@@ -363,7 +363,6 @@ handlers = [
     (r'/assign_task', AssignTask),
     (r'/logout', SignOut),
     (r'/test', Try),
-
 ]
 
 settings = dict(
