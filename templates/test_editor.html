@@ -1,42 +1,27 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>CKEditor</title>
-        <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
-        <!-- /*<script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>*/ -->
-        <script type="text/javascript" src="{{static_url('scripts/main.js')}}"></script>
-        <script>
-          tinymce.init({
-            selector: '#myEditor',
-            theme: 'modern',
-            plugins: [
-              'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-              'spellchecker, searchreplace wordcount visualblocks visualchars code',
-              'fullscreen insertdatetime media nonbreaking, save table contextmenu',
-              'directionality emoticons template paste textcolor'
-            ],
-          });
-        </script>
-    </head>
-    <body>
-        <form action="editor" method="post">
-            {% if content %}
-            <textarea id="myEditor" name="editor1">{{content}}</textarea>
-            {% else %}
-            <textarea id="myEditor" name="editor1">Write content here!</textarea>
-            {% end %}
-            <br>
-            <button class="button" type="submit" name='draft' value='draft'>Save as draft</button>
-            <button class="button" type="submit" name='final' value='final' onclick='makeReadOnly()'>Final submission</button>
-        </form>
+{% extends "index_user.html" %}
+
+{% block content %}
+<title>Content Editor</title>
+<form action="editor" method="post">
+    {% if content %}
+    <textarea id="myEditor" name="editor1">{{content}}</textarea>
+    {% else %}
+    <textarea id="myEditor" name="editor1">Write content here!</textarea>
+    {% end %}
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-1">
+          <button class="btn btn-secondary fa" type="submit" name='draft'
+          value='draft'>Save as draft</button>
+        </div>
+        <div class="col-sm-1 col-sm-push-1">
+          <button class="btn btn-primary fa fa-plane" type="submit"
+          name='final' value='final' onclick='makeReadOnly()'> Final submission</button>
+        </div>
+      </div>
+    </div>
+</form>
+{% end %}
+        <!-- TODO: making the textarea readonly after the final submission  -->
         <!-- /*<script>
-
-
-
-		CKEDITOR.replace( 'editor1', {
-
-    });
-        </script>*/ -->
-    </body>
-</html>

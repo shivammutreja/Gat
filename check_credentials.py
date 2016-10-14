@@ -35,18 +35,14 @@ class CheckCredentials:
     @staticmethod
     def save_user(hod_user_hash, user_name, user_email, password, birthdate):
 
-        # if coll.find_one({'user_id': hod_user_hash})['users']['chapter']:
-        # 	return True
-        # else:
-        	# hod_user_hash = hashlib.md5(hod_user_name).hexdigest()
+        user_hash = hashlib.md5(user_email).hexdigest()
+        pass_hash = hashlib.md5(password).hexdigest()
 
         coll.update({'user_id': hod_user_hash}, {'$addToSet': {'users':\
             {'user_name': user_name, 'user_email': user_email, 'birthdate':\
-            birthdate,}}})
+            birthdate, 'user_id': user_hash}}})
         print 'some chudap'
 
-        user_hash = hashlib.md5(user_name).hexdigest()
-        pass_hash = hashlib.md5(password).hexdigest()
 
         user_coll.update({'user_id': user_hash, 'password': pass_hash}, {'$set':\
         {'user_name': user_name, 'user_birthdate': birthdate, 'user_email':\
@@ -70,7 +66,7 @@ class CheckCredentials:
             print e
 
     @staticmethod
-    def save_user_task(user_hash, content):
+    def save_user_content(user_hash, content):
         user_coll.update({'user_id': user_hash}, {'$set': {'content': content}})
         return
 
@@ -131,9 +127,28 @@ class CheckCredentials:
             print e
 
     @staticmethod
-    def get_complete_users():
+    def get_available_users(hod_user_hash):
+        available_users = list()
         try:
-            users = list(user_coll.find({'status': 'complete'}, {'_id': False}))
-            return users
+            users = list(coll.find({'user_id': '52db15126120e575ab471b046d46fbab'}, \
+            {'users': True, '_id': False}))[0]['users']
+
+            for user in users:
+                if not 'status' in user.keys() or user['status']=='complete':
+                    available_users.append(user)
+
+            return available_users
         except Exception,e:
             print e
+        return
+
+    @staticmethod
+    def assign_task(hod_user_hash, chapter, user_id):
+        user_coll.update({'user_id': user_id}, {'$set': {'chapter': chapter, \
+        'status': 'Pending'}})
+
+        print user_id, '@!@@!'
+
+        coll.update({'user_id': hod_user_hash, 'users.user_id': user_id}, {'$set': {'users.$.chapter': \
+        chapter, 'users.$.status': 'pending'}})
+        return
