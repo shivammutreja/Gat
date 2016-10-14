@@ -203,14 +203,14 @@ class ShowEditor(BaseHandler):
         content = self.get_argument("editor1", default=None, strip=False)
         if self.get_body_argument('draft', default=None):
             print 'draft hai!'
-            yield self.save_user_content(user_hash, content)
+            yield self.save_user_written_content(user_hash, content)
         else:
             yield self.send_user_content_for_review(user_hash, content, user_email)
         self.redirect('/dashboard')
 
     @tornado.gen.coroutine
-    def save_user_content(self, user_hash, content):
-        raise tornado.gen.Return(CheckCredentials.save_user_task(user_hash, content))
+    def save_user_written_content(self, user_hash, content):
+        raise tornado.gen.Return(CheckCredentials.save_user_content(user_hash, content))
 
     @tornado.gen.coroutine
     def send_user_content_for_review(self, user_hash, content, user_email):
@@ -331,9 +331,11 @@ class AssignTask(BaseHandler):
             self.render('assign_task.html', users=available_users)
 
     def post(self):
+        user_hash = self.get_current_user().get('user_id')
         assigned_to = self.get_argument('select-user')
         task = self.get_argument('select-chapter')
         print assigned_to, task
+        CheckCredentials.assign_task(user_hash, task, assigned_to)
         self.redirect('/dashboard')
 
 class SignOut(BaseHandler):

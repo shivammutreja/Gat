@@ -1,6 +1,8 @@
 {% extends "index_hod.html" %}
 
 {% block content %}
+<title>Assign User</title>
+
 <div class="container-fluid">
   <br>
   <form name="assign" action="assign_task" method="post">
@@ -10,7 +12,7 @@
         <option selected disabled>User</option>
         {% if users %}
           {% for user in users %}
-          <option value={{user.get('user_name', '')}}>{{user.get('user_name', '')}}</option>
+          <option value={{user.get('user_id', '')}}>{{user.get('user_name', '')}}</option>
           {% end %}
         {% end %}
       </select>
