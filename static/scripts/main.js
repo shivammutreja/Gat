@@ -1,12 +1,15 @@
 function makeReadOnly() {
-	/*var myText = document.getElementById("myEditor");
-	console.log(myText);
-	if (myText.hasAttribute("readonly")) {
-		console.log('already there');
-	}
-	else {
-		myText.setAttribute("readonly", "true");
-	}*/
+	// var myText = document.getElementById("myEditor");
+	// console.log(myText);
+	// if (myText.hasAttribute("readonly")) {
+	// 	console.log('already there');
+	// }
+	// else {
+	// 	// myText.setAttribute("readonly", "true");
+	// 	myText.className+= " input-disabled";
+	// 	// pres[i].className = "input-disabled";
+	// }
+
 	document.getElementById("myEditor").readOnly = true;
 }
 
@@ -50,4 +53,4 @@ else {
 myButton.onclick = function() {
 	setUserName();
 }
-*/	
+*/
