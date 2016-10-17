@@ -188,8 +188,15 @@ class ShowEditor(BaseHandler):
     @tornado.gen.coroutine
     def get(self):
         user = self.get_current_user()
-        content = yield self.get_user_content(user.get('user_id'))
-        self.render('test_editor.html', content=content)
+        task = yield self.check_task_status(user.get('user_id'))
+        task_status = task.get('status', '')
+        if not user:
+            self.redirect('/login')
+        elif task_status=="Under Review":
+            self.render("user_task_status.html")
+        else:
+            content = yield self.get_user_content(user.get('user_id'))
+            self.render('test_editor.html', content=content)
 
     @tornado.gen.coroutine
     def get_user_content(self, user_hash):
@@ -207,6 +214,10 @@ class ShowEditor(BaseHandler):
         else:
             yield self.send_user_content_for_review(user_hash, content, user_email)
         self.redirect('/dashboard')
+
+    @tornado.gen.coroutine
+    def check_task_status(self, user_hash):
+        raise tornado.gen.Return(CheckCredentials.get_user_tasks(user_hash))
 
     @tornado.gen.coroutine
     def save_user_written_content(self, user_hash, content):
@@ -385,13 +396,13 @@ def on_shutdown():
 
 
 def main():
-    # sockets = tornado.netutil.bind_sockets(8000)
-    # tornado.process.fork_processes(10)
-    # http_server = tornado.httpserver.HTTPServer(app, max_body_size=200 * 1024 * 1024)
-    # http_server.add_sockets(sockets)
-    http_server = tornado.httpserver.HTTPServer(app)
-    http_server.bind("8000")
-    http_server.start(10)
+    sockets = tornado.netutil.bind_sockets(8000)
+    tornado.process.fork_processes(10)
+    http_server = tornado.httpserver.HTTPServer(app, max_body_size=200 * 1024 * 1024)
+    http_server.add_sockets(sockets)
+    # http_server = tornado.httpserver.HTTPServer(app)
+    # http_server.bind("8000")
+    # http_server.start(10)
     # app.listen('8000')
     loop = tornado.ioloop.IOLoop.instance()
     signal.signal(signal.SIGINT, lambda sig, frame: loop.add_callback_from_signal(on_shutdown))
