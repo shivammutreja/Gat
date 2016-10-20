@@ -13,11 +13,11 @@
 						<div class="col s12 m7">
 							<div class="card hoverable">
 								<div class="card-image">
-									<img src="{{image}}" alt="Image no longer exists">
+									<img src="{{image}}" alt="Image no longer exists" height="370px" width="70px">
 								</div>
 								<div class="card-action">
-									<a class="fa fa-external-link" target="_blank" href="{{image}}"> This is a link</a>
-									<a class="red-text fa fa-trash" style="float:right;" href="{{image}}"> Delete</a>
+									<a href="{{image}}" class="fa fa-external-link" target="_blank"> This is a link</a>
+									<a href="javascript:void(0)" class="red-text fa fa-trash" style="float:right;" onClick="javascript:deleteImage('{{image}}')"> Delete</a>
 								</div>
 							</div>
 						</div>

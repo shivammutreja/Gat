@@ -26,6 +26,7 @@
       <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
       <script type="text/javascript" src="{{static_url('scripts/main.js')}}"></script>
       <script src="https://use.fontawesome.com/b981ba724a.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 
       <script>
@@ -51,6 +52,18 @@
 
       };
 
+      function deleteImage(image){
+        console.log(image)
+        $.ajax({
+          url: "/your_images",
+          type: "POST",
+          data: {"image": image},
+          success: function(response) {
+            console.log(response);
+            if(!response.error) location.reload(true);
+          }
+        });
+        };
 
       </script>
 
