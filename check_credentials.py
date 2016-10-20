@@ -119,6 +119,11 @@ class CheckCredentials:
             print e
 
     @staticmethod
+    def delete_image(user_hash, image_id):
+        user_coll.update({'user_id': user_hash}, {'$pull': {'image_id': image_id}})
+
+
+    @staticmethod
     def get_files(user_hash):
         try:
             file_id = user_coll.find_one({'user_id': user_hash}, {'_id': False})['file_id']

@@ -269,6 +269,13 @@ class UserImages(BaseHandler):
             image_id = CheckCredentials.get_images(user_hash)
             self.render('user_images.html', image_id=image_id)
 
+    def post(self):
+        user_hash = self.get_current_user().get('user_id')
+        image_id = self.get_body_argument('image')
+        print image_id
+        # print image
+        CheckCredentials.delete_image(user_hash, image_id)
+
 class UserFiles(BaseHandler):
 
     def get(self):
