@@ -2,11 +2,27 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+
 	<title>Your Images</title>
     {% if image_id %}
         <br><br>
         {% for image in image_id %}
-            <img src="{{image}}" style="width:500px; height:560px;" alt="Smiley face">
+					<div class="row">
+						<div class="col s12 m7">
+							<div class="card hoverable">
+								<div class="card-image">
+									<img src="{{image}}" alt="Image no longer exists">
+								</div>
+								<div class="card-action">
+									<a class="fa fa-external-link" target="_blank" href="{{image}}"> This is a link</a>
+									<a class="red-text fa fa-trash" style="float:right;" href="{{image}}"> Delete</a>
+								</div>
+							</div>
+						</div>
+
+					</div>
         {% end %}
     {% else %}
     You haven't uploaded any image yet. <a href="/upload_image">Upload an image now.</a>
