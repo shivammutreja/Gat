@@ -13,8 +13,8 @@ Revision:
 
 <title>Dashboard</title>
 
-{% if users %}
-<h2 class="sub-header">Your Tasks</h2>
+{% if 'chapter' in users.keys() %}
+    <h2 class="sub-header">Your Tasks</h2>
     <div class="table-responsive">
     <table class="table table-striped">
     <thead>
@@ -30,6 +30,8 @@ Revision:
       </tr>
     </tbody>
     </table>
-</div>
+    </div>
+{% else %}
+  <p>You don't have any chapter assigned to you yet! Relax &nbsp;&nbsp;<span style="font-size: x-large;">🚬</span></p>
 {% end %}
 {% end %}
