@@ -1,5 +1,17 @@
 #!/usr/bin/env python
 
+
+"""
+Author: Shivam Mutreja
+Date: 18/10/2016
+Purpose: Writing all the serving urls.
+
+Revision:
+	Author: Shivam Mutreja
+	Date: 20/10/2016
+    Purpose: To add POST handle for deleting user images.
+"""
+
 import os, uuid, sys
 import tornado
 import tornado.httpserver

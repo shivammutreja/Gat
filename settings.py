@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+"""
+Author: Shivam Mutreja
+Date: 18/10/2016
+Purpose: Global file for calling mongo connection.
+"""
+
 import os
 import pymongo
 import hashlib

@@ -1,9 +1,20 @@
 #!/usr/bin/env python
 
+"""
+Author: Shivam Mutreja
+Date: 18/10/2016
+Purpose: Updating data in the database.
+
+Revision:
+	Author: Shivam Mutreja
+	Date: 20/10/2016
+	Purpose: To add new function to delete user images.
+
+"""
+
 import pymongo
 import hashlib
 import settings
-# from bs4 import BeautifulSoup
 
 conn = settings.get_mongodb_connection()
 coll = conn.test_db.test_coll
