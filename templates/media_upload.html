@@ -7,21 +7,24 @@ Revision:
 	Date: 20/10/2016
 	Purpose: Improved button styles. -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="{{static_url('css/media.css')}}">
-    <script type="text/javascript" src="{{static_url('scripts/upload.js')}}"></script>
-    <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
-</head>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <!--<link rel="stylesheet" href="{{static_url('css/media.css')}}">-->
+    <!--<script type="text/javascript" src="{{static_url('scripts/upload.js')}}"></script>-->
+    <!--<script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>-->
+<!--</head>-->
+{% extends "index_user.html" %}
+
+{% block content %}
 <body>
     <meta charset="UTF-8">
     <title>Media Upload</title>
-    <div class="container">
+    <div class="container" style="width: 90%">
       <div class="panel panel-default">
         <div class="panel-heading"><strong>Upload Files</strong></div>
         <div class="panel-body">
@@ -57,4 +60,5 @@ Revision:
             </div>
           </div>
 </body>
-</html>
+{% end %}
+<!--</html>-->
