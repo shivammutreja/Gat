@@ -15,7 +15,6 @@ Revision:
 <title>Dashboard</title>
 
 {% if users %}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
   <h2 class="sub-header">Tasks</h2>
   <div class="table-responsive">
       <table class="table table-striped">
@@ -29,7 +28,8 @@ Revision:
       <tbody>
       {% for user_name in users %}
       <tr>
-          <td>{{user_name.get('user_name', '')}}</td>
+          <td><a name="get_hash" href="javascript:void(0)" onClick="javascript:sendUserId('{{user_name.get('user_id', '')}}')">
+            {{user_name.get('user_name', '')}}</a></td>
           <td>{{user_name.get('user_email', '')}}</td>
           <td>{{user_name.get('chapter', 'No chapter assigned')}}</td>
       </tr>
