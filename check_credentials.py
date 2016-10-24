@@ -8,7 +8,7 @@ Purpose: Updating data in the database.
 Revision:
 	Author: Shivam Mutreja
 	Date: 20/10/2016
-	Purpose: To add new function to delete user images.
+	Purpose: T new function to delete user images.
 
 """
 
@@ -95,11 +95,12 @@ class CheckCredentials:
 
     @staticmethod
     def get_user_task(user_hash):
-        try:
-            content = user_coll.find_one({'user_id': user_hash}, {'_id': False})['content']
-            return content
-        except Exception,e:
-            print e
+		try:
+			# print user_hash
+			content = user_coll.find_one({'user_id': user_hash}, {'_id': False})['content']
+			return content
+		except Exception,e:
+			print e
 
     @staticmethod
     def save_user_video(user_hash, video_id):

@@ -167,6 +167,7 @@ class UserDashboard(BaseHandler):
             tasks = CheckCredentials.get_user_tasks(entry['user_id'])
             raise tornado.gen.Return(tasks)
 
+
 class AddUser(BaseHandler):
 
     def get(self):
@@ -368,6 +369,25 @@ class AssignTask(BaseHandler):
         CheckCredentials.assign_task(user_hash, task, assigned_to)
         self.redirect('/dashboard')
 
+class UserTaskFromHod(BaseHandler):
+
+	@asynchronous
+	@tornado.gen.coroutine
+	def get(self):
+		# user = self.get_current_user()
+		# user_id = self.get_argument('user_hash', '')
+		# task_content = CheckCredentials.get_user_task(user_id)
+		task_content = yield self.get_user_task_content()
+		print task_content
+		self.render("hod_editor.html", content=task_content)
+
+	@tornado.gen.coroutine
+	def get_user_task_content(self):
+		user_id = self.get_argument('user_hash', '')
+		print user_id
+		raise tornado.gen.Return(CheckCredentials.get_user_task(user_id))
+
+
 class SignOut(BaseHandler):
     # @tornado.web.authenticated
     def get(self):
@@ -391,6 +411,7 @@ handlers = [
     (r'/upload_video', UploadVideo),
     (r'/your_videos', UserVideos),
     (r'/assign_task', AssignTask),
+	(r'/user_from_hod', UserTaskFromHod),
     (r'/logout', SignOut),
     (r'/test', Try),
 ]

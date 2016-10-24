@@ -37,12 +37,48 @@ Revision:
       <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
       <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
       <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+      <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
+      <script src="https://use.fontawesome.com/b981ba724a.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
       <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
+
+      <script>
+      tinymce.init({
+        selector: '#myEditor',
+        theme: 'modern',
+        plugins: [
+          'advlist autolink link image lists charmap print preview hr anchor pagebreak',
+          'spellchecker, searchreplace wordcount visualblocks visualchars code',
+          'fullscreen insertdatetime media nonbreaking, save table contextmenu',
+          'directionality emoticons template paste textcolor'
+        ],
+      });
+      </script>
+
+      <script>
+      function sendUserId(user_id){
+        console.log(user_id);
+        // $.ajax({
+        //   url: "/user_from_hod",
+        //   type: "GET",
+        //   data: {"user_hash": user_id},
+        //   success: function(data) {
+        //     console.log(user_id);
+        //     console.log(location);
+            // location.replace("/user_from_hod")
+        window.location.href="/user_from_hod?user_hash="+user_id;
+            // if(!response.error) location.reload(true);
+        //   }
+        // });
+        // user_id.preventDefault();
+        };
+      </script>
+
 
   </head>
 
@@ -87,10 +123,13 @@ Revision:
             <li><a href="">More navigation</a></li>
           </ul>
         </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        {% block content %}
+        {% end %}
+        </div>
       </div>
     </div>
-    {% block content %}
-    {% end %}
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

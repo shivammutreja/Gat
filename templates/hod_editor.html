@@ -1,0 +1,39 @@
+<!-- Author: Shivam Mutreja
+Date: 18/10/2016
+Purpose: Text editor for user to write content.
+
+Revision:
+	Author: Shivam Mutreja
+	Date: 20/10/2016
+	Purpose: Added animation to text-area and buttons. -->
+
+{% extends "index_hod.html" %}
+
+{% block content %}
+boo yeah!
+<title>Content Editor</title>
+<form id="fkfrm" class=myFrom action="editor" method="get">
+    {% if content %}
+    <textarea class="myArea" id="myEditor" name="editor1" readonly>{{content}}</textarea>
+    {% else %}
+    <textarea class="myArea" id="myEditor" name="editor1" readonly>Write content here!</textarea>
+    {% end %}
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-1">
+          <button id="animate" class="btn btn-secondary fa animated bounce" type="submit" name='draft'
+          value='draft' disabled>Save as draft</button>
+        </div>
+        <div class="col-sm-1 col-sm-push-1">
+          <button id="animate" class="btn btn-primary fa fa-plane animated shake" type="submit" name='final'
+          value='final' disabled> Final submission</button>
+          <!-- <a href="javascript:void(0);" class="btn btn-primary fa fa-plane"
+          name='final' value='final' > Final submission</a> -->
+        </div>
+      </div>
+    </div>
+</form>
+{% end %}
+        <!-- TODO: making the textarea readonly after the final submission  -->
+        <!-- /*<script>
