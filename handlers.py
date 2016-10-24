@@ -10,6 +10,10 @@ Revision:
 	Author: Shivam Mutreja
 	Date: 20/10/2016
     Purpose: To add POST handle for deleting user images.
+
+	Author: Shivam Mutreja
+	Date: 24/10/2016
+	Purpose: Added a new handler to get user task(content) from the HOD dashboard.
 """
 
 import os, uuid, sys
@@ -374,19 +378,24 @@ class UserTaskFromHod(BaseHandler):
 	@asynchronous
 	@tornado.gen.coroutine
 	def get(self):
-		# user = self.get_current_user()
-		# user_id = self.get_argument('user_hash', '')
-		# task_content = CheckCredentials.get_user_task(user_id)
-		task_content = yield self.get_user_task_content()
+		user_id, task_content = yield self.get_user_task_content()
 		print task_content
-		self.render("hod_editor.html", content=task_content)
+		self.render("hod_editor.html", content=task_content, user_id=user_id)
 
 	@tornado.gen.coroutine
 	def get_user_task_content(self):
 		user_id = self.get_argument('user_hash', '')
-		print user_id
-		raise tornado.gen.Return(CheckCredentials.get_user_task(user_id))
+		# print user_id
+		raise tornado.gen.Return((user_id, CheckCredentials.get_user_task(user_id)))
 
+	def post(self):
+		user_id = self.get_body_argument("user_id", '')
+		hod_id = self.get_current_user().get("user_id",'')
+		# user_id = self.get_body_argument("user_id", '')
+		print hod_id
+		print user_id,"@!"
+		CheckCredentials.mark_task_complete(hod_id, user_id)
+		# self.redirect('/dashboard')
 
 class SignOut(BaseHandler):
     # @tornado.web.authenticated
