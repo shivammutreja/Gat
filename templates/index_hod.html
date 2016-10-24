@@ -61,6 +61,21 @@ Revision:
       </script>
 
       <script>
+      function markComplete(user_id){
+        console.log(user_id)
+        $.ajax({
+          url: "/user_from_hod",
+          type: "POST",
+          data: {"user_id": user_id},
+          success: function(response) {
+            $("#disable").attr("disabled", true);
+            if(!response.error) location.reload(true);
+          }
+        });
+        };
+      </script>
+
+      <script>
       function sendUserId(user_id){
         console.log(user_id);
         // $.ajax({

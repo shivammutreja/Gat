@@ -12,7 +12,7 @@ Revision:
 {% block content %}
 boo yeah!
 <title>Content Editor</title>
-<form id="fkfrm" class=myFrom action="editor" method="get">
+<form id="fkfrm" class=myFrom action="/user_from_hod" method="post">
     {% if content %}
     <textarea class="myArea" id="myEditor" name="editor1" readonly>{{content}}</textarea>
     {% else %}
@@ -22,12 +22,12 @@ boo yeah!
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-1">
-          <button id="animate" class="btn btn-secondary fa animated bounce" type="submit" name='draft'
-          value='draft' disabled>Save as draft</button>
+          <button id="animate" class="btn btn-secondary fa fa-repeat" type="submit" name='re-assign'
+          value='re-assign' disabled> Re-assign</button>
         </div>
         <div class="col-sm-1 col-sm-push-1">
-          <button id="animate" class="btn btn-primary fa fa-plane animated shake" type="submit" name='final'
-          value='final' disabled> Final submission</button>
+          <button id="disable" class="btn btn-primary fa fa-check" type="submit" name='complete'
+          value='{{user_id}}' onClick="javascript:markComplete('{{user_id}}')"> Mark as Complete</button>
           <!-- <a href="javascript:void(0);" class="btn btn-primary fa fa-plane"
           name='final' value='final' > Final submission</a> -->
         </div>

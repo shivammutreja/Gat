@@ -23,6 +23,7 @@ Revision:
           <th>Users</th>
           <th>Email</th>
           <th>Tasks</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +33,7 @@ Revision:
             {{user_name.get('user_name', '')}}</a></td>
           <td>{{user_name.get('user_email', '')}}</td>
           <td>{{user_name.get('chapter', 'No chapter assigned')}}</td>
+          <td>{{user_name.get('status', 'Unknown!')}}</td>
       </tr>
       {% end %}
       </tbody>
