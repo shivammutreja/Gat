@@ -13,11 +13,33 @@ Revision:
 
 <title>Content Editor</title>
 <form id="fkfrm" class=myFrom action="editor" method="post">
-    {% if content %}
-    <textarea class="myArea" id="myEditor" name="editor1">{{content}}</textarea>
+  {% if 'content' in content.keys() %}
+
+    {% if content['status'] in ['Under Review', 'Completed'] %}
+      <p>The task is {{content['status']}}.</p>
+
     {% else %}
-    <textarea class="myArea" id="myEditor" name="editor1">Write content here!</textarea>
+      <textarea class="myArea" id="myEditor" name="editor1">{{content['content']}}</textarea>
+      <br>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-1">
+            <button id="animate" class="btn btn-secondary fa animated bounce" type="submit" name='draft'
+            value='draft'>Save as draft</button>
+          </div>
+          <div class="col-sm-1 col-sm-push-1">
+            <button id="animate" class="btn btn-primary fa fa-plane animated shake" type="submit" name='final'
+            value='final'> Final submission</button>
+            <!-- <a href="javascript:void(0);" class="btn btn-primary fa fa-plane"
+            name='final' value='final' > Final submission</a> -->
+          </div>
+        </div>
+      </div>
+
     {% end %}
+
+  {% else %}
+    <textarea class="myArea" id="myEditor" name="editor1" readonly>Write content here!</textarea>
     <br>
     <div class="container-fluid">
       <div class="row">
@@ -33,7 +55,10 @@ Revision:
         </div>
       </div>
     </div>
+
+  {% end %}
 </form>
+
 {% end %}
         <!-- TODO: making the textarea readonly after the final submission  -->
         <!-- /*<script>

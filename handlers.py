@@ -205,15 +205,16 @@ class ShowEditor(BaseHandler):
     @tornado.gen.coroutine
     def get(self):
         user = self.get_current_user()
-        task = yield self.check_task_status(user.get('user_id'))
-        task_status = task.get('status', '')
+        # task = yield self.check_task_status(user.get('user_id'))
+        # task_status = task.get('status', '')
         if not user:
             self.redirect('/login')
-        elif task_status=="Under Review":
-            self.render("user_task_status.html")
-        else:
-            content = yield self.get_user_content(user.get('user_id'))
-            self.render('test_editor.html', content=content)
+
+        # if task_status=="Under Review":
+        #     self.render("user_task_status.html")
+        # else:
+        content = yield self.get_user_content(user.get('user_id'))
+        self.render('test_editor.html', content=content)
 
     @tornado.gen.coroutine
     def get_user_content(self, user_hash):
@@ -373,6 +374,9 @@ class AssignTask(BaseHandler):
         CheckCredentials.assign_task(user_hash, task, assigned_to)
         self.redirect('/dashboard')
 
+	# TODO: Make the assign task method such that the collection can hold multiple \
+    #chapters assigned to user. Do it using addToSet!
+
 class UserTaskFromHod(BaseHandler):
 
 	@asynchronous
@@ -392,10 +396,8 @@ class UserTaskFromHod(BaseHandler):
 		user_id = self.get_body_argument("user_id", '')
 		hod_id = self.get_current_user().get("user_id",'')
 		# user_id = self.get_body_argument("user_id", '')
-		print hod_id
-		print user_id,"@!"
 		CheckCredentials.mark_task_complete(hod_id, user_id)
-		# self.redirect('/dashboard')
+		self.redirect('/dashboard')
 
 class SignOut(BaseHandler):
     # @tornado.web.authenticated

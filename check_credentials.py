@@ -101,7 +101,6 @@ class CheckCredentials:
       """
       @staticmethod
       def mark_task_complete(hod_id, user_id):
-            print "ayyahahaah"
             user_coll.update({'user_id': user_id}, {'$set': {'status': 'Completed'}})
 
             coll.update({'user_id': hod_id, 'users.user_id': user_id}, {'$set': \
@@ -113,7 +112,7 @@ class CheckCredentials:
       def get_user_task(user_hash):
             try:
             	# print user_hash
-                  content = user_coll.find_one({'user_id': user_hash}, {'_id': False})['content']
+                  content = user_coll.find_one({'user_id': user_hash}, {'_id': False})
                   return content
             except Exception,e:
                   print e
@@ -163,11 +162,11 @@ class CheckCredentials:
       def get_available_users(hod_user_hash):
             available_users = list()
             try:
-                  users = list(coll.find({'user_id': '52db15126120e575ab471b046d46fbab'}, \
+                  users = list(coll.find({'user_id': hod_user_hash}, \
                   {'users': True, '_id': False}))[0]['users']
 
                   for user in users:
-                        if not 'status' in user.keys() or user['status']=='complete':
+                        if not 'status' in user.keys() or user['status']=='Completed':
                           available_users.append(user)
 
                   return available_users
