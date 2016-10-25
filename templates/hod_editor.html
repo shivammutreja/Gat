@@ -6,18 +6,24 @@ Revision:
 	Author: Shivam Mutreja
 	Date: 20/10/2016
 	Purpose: Added animation to text-area and buttons. -->
-
 {% extends "index_hod.html" %}
 
 {% block content %}
-boo yeah!
+
 <title>Content Editor</title>
 <form id="fkfrm" class=myFrom action="/user_from_hod" method="post">
-    {% if content %}
-    <textarea class="myArea" id="myEditor" name="editor1" readonly>{{content}}</textarea>
+  {% if 'content' in content.keys() %}
+
+    {% if content['status'] == 'Completed' %}
+    <p>The task is {{content['status']}} by the user.</p>
+    <p>Assign a new task - <a href="/assign_task">Assign Task<a></p>
+
+    {% elif content['status'] == 'Pending' %}
+    <p>The task is {{content['status']}} by the user. This user is not available for 
+      task assignment.</p>
+
     {% else %}
-    <textarea class="myArea" id="myEditor" name="editor1" readonly>Write content here!</textarea>
-    {% end %}
+    <textarea class="myArea" id="myEditor" name="editor1" readonly>{{content['content']}}</textarea>
     <br>
     <div class="container-fluid">
       <div class="row">
@@ -33,6 +39,12 @@ boo yeah!
         </div>
       </div>
     </div>
+    {% end %}
+
+  {% else %}
+  <textarea class="myArea" id="myEditor" name="editor1" readonly>Write content here!</textarea>
+  {% end %}
+  
 </form>
 {% end %}
         <!-- TODO: making the textarea readonly after the final submission  -->
