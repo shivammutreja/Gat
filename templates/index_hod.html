@@ -70,7 +70,26 @@ Revision:
           success: function(response) {
             console.log(response);
             // $("#disable").attr("disabled", true);
-            // if(!response.error) location.reload(true);
+            window.location.href="/dashboard";
+          }
+        });
+        };
+
+      function takeToReassignForm(user_id){
+        alert(user_id);
+        window.location.href="/reassign_form?user_hash="+user_id;
+        };
+
+      function reassignTask(user_id){
+        console.log(user_id);
+        $.ajax({
+          url: "/reassign_form",
+          type: "POST",
+          data: {"user_id": user_id},
+          success: function(response) {
+            console.log(response);
+            // $("#disable").attr("disabled", true);
+            if(!response.error) location.href="/reassign_form";
           }
         });
         };

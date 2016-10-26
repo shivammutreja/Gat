@@ -11,7 +11,7 @@ Revision:
 {% block content %}
 
 <title>Content Editor</title>
-<form id="fkfrm" class=myFrom action="/user_from_hod" method="post">
+<form id="fkfrm" class=myFrom action="" method="post">
   {% if 'content' in content.keys() %}
 
     {% if content['status'] == 'Completed' %}
@@ -29,11 +29,11 @@ Revision:
       <div class="row">
         <div class="col-sm-1">
           <button id="animate" class="btn btn-secondary fa fa-repeat" type="submit" name='re-assign'
-          value='re-assign' disabled> Re-assign</button>
+          value='{{user_id}}'> Re-assign</button>
         </div>
         <div class="col-sm-1 col-sm-push-1">
           <button id="disable" class="btn btn-primary fa fa-check" type="submit" name='complete'
-          value='{{user_id}}' onClick="javascript:markComplete('{{user_id}}')"> Mark as Complete</button>
+          value='{{user_id}}'> Mark as Complete</button>
           <!-- <a href="javascript:void(0);" class="btn btn-primary fa fa-plane"
           name='final' value='final' > Final submission</a> -->
         </div>
