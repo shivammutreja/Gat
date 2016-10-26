@@ -379,25 +379,43 @@ class AssignTask(BaseHandler):
 
 class UserTaskFromHod(BaseHandler):
 
-	@asynchronous
-	@tornado.gen.coroutine
-	def get(self):
-		user_id, task_content = yield self.get_user_task_content()
-		print task_content
-		self.render("hod_editor.html", content=task_content, user_id=user_id)
+    @asynchronous
+    @tornado.gen.coroutine
+    def get(self):
+        user_id, task_content = yield self.get_user_task_content()
+        print task_content
+        self.render("hod_editor.html", content=task_content, user_id=user_id)
 
-	@tornado.gen.coroutine
-	def get_user_task_content(self):
-		user_id = self.get_argument('user_hash', '')
-		# print user_id
-		raise tornado.gen.Return((user_id, CheckCredentials.get_user_task(user_id)))
+    @tornado.gen.coroutine
+    def get_user_task_content(self):
+        user_id = self.get_argument('user_hash', '')
+        # print user_id
+        raise tornado.gen.Return((user_id, CheckCredentials.get_user_task(user_id)))
 
-	def post(self):
-		user_id = self.get_body_argument("user_id", '')
-		hod_id = self.get_current_user().get("user_id",'')
-		# user_id = self.get_body_argument("user_id", '')
-		CheckCredentials.mark_task_complete(hod_id, user_id)
-		self.redirect('/dashboard')
+    def post(self):
+        user_id = self.get_argument("re-assign")
+        hod_id = self.get_current_user().get("user_id",'')
+        if user_id:
+            self.redirect('/reassign_form?user_hash={}'.format(user_id))
+        else:
+            CheckCredentials.mark_task_complete(hod_id, user_id)
+            self.redirect('/dashboard')
+
+class ReassignmentForm(BaseHandler):
+
+    def get(self):
+        user_id = self.get_argument('user_hash')
+        self.render("reassignment_form.html", user_id=user_id)
+
+    def post(self):
+        user_id = self.get_body_argument("get_user_id")
+        hod_id = self.get_current_user().get("user_id",'')
+        remarks = self.get_body_argument("message")
+        print user_id
+        print remarks
+        CheckCredentials.reassign_task(hod_id, user_id, remarks)
+        self.redirect("/dashboard")
+
 
 class SignOut(BaseHandler):
     # @tornado.web.authenticated
@@ -422,7 +440,8 @@ handlers = [
     (r'/upload_video', UploadVideo),
     (r'/your_videos', UserVideos),
     (r'/assign_task', AssignTask),
-	(r'/user_from_hod', UserTaskFromHod),
+    (r'/user_from_hod', UserTaskFromHod),
+    (r'/reassign_form', ReassignmentForm),
     (r'/logout', SignOut),
     (r'/test', Try),
 ]

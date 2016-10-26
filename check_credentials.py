@@ -177,10 +177,22 @@ class CheckCredentials:
       @staticmethod
       def assign_task(hod_user_hash, chapter, user_id):
             user_coll.update({'user_id': user_id}, {'$set': {'chapter': chapter, \
-            'status': 'Pending'}})
+                  'status': 'Pending'}})
 
             print user_id, '@!@@!'
 
             coll.update({'user_id': hod_user_hash, 'users.user_id': user_id}, {'$set': {'users.$.chapter': \
             chapter, 'users.$.status': 'pending'}})
+            
             return
+
+      @staticmethod
+      def reassign_task(hod_user_hash, user_id, remarks):
+            user_coll.update({'user_id': user_id}, {'$set': {'status': 're-assigned', \
+                  'remarks': remarks}})
+
+            coll.update({'user_id': hod_user_hash, 'users.user_id': user_id}, {'$set': \
+                  {'users.$.status': 're-assigned', 'users.$.remarks': remarks}})
+
+            return
+
