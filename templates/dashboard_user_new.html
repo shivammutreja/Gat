@@ -13,7 +13,7 @@ Revision:
 
 <title>Dashboard</title>
 
-{% if 'chapter' in users.keys() %}
+{% if 'tasks' in users.keys() %}
     <h2 class="sub-header">Your Tasks</h2>
     <div class="table-responsive">
     <table class="table table-striped">
@@ -25,8 +25,8 @@ Revision:
     </thead>
     <tbody>
       <tr>
-        <td><a href="/editor">{{users['chapter']}}</a></td>
-        <td>{{users['status']}}</td>
+        <td><a href="/editor">{{users['tasks'][-1]['chapter']}}</a></td>
+        <td>{{users['tasks'][-1]['status']}}</td>
       </tr>
     </tbody>
     </table>
