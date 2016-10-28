@@ -12,18 +12,23 @@ Revision:
 
 <title>Content Editor</title>
 <form id="fkfrm" class=myFrom action="" method="post">
-  {% if 'content' in content.keys() %}
+  {% if 'tasks' in content.keys() %}
 
-    {% if content['status'] == 'Completed' %}
-    <p>The task is {{content['status']}} by the user.</p>
+    {% if content['tasks'][-1]['status'] in ['Completed', 'Unknown!'] %}
+    <p>The task is {{content['tasks'][-1]['status']}} by the user.</p>
     <p>Assign a new task - <a href="/assign_task">Assign Task<a></p>
 
-    {% elif content['status'] == 'Pending' %}
-    <p>The task is {{content['status']}} by the user. This user is not available for 
+    {% elif content['tasks'][-1]['status'] in ['Pending', 're-assigned'] %}
+    <p>The task is {{content['tasks'][-1]['status']}} by the user. This user is not available for 
       task assignment.</p>
 
     {% else %}
-    <textarea class="myArea" id="myEditor" name="editor1" readonly>{{content['content']}}</textarea>
+    <textarea class="myArea" id="myEditor" name="editor1" readonly>{{content['tasks'][-1]['content']}}</textarea>
+
+    <textarea class="myArea" id="myEditor" name="get_chapter" style="display:none;">{{content['tasks'][-1]['chapter']}}</textarea>
+
+    <textarea class="myArea" id="myEditor" name="get_position" style="display:none;">{{len(content['tasks'])}}</textarea>
+
     <br>
     <div class="container-fluid">
       <div class="row">
@@ -41,8 +46,12 @@ Revision:
     </div>
     {% end %}
 
+  {% elif 'status' not in content['tasks'][-1].keys() %}
+  <p>Assign a new task - <a href="/assign_task">Assign Task<a></p>
+
   {% else %}
   <textarea class="myArea" id="myEditor" name="editor1" readonly>Write content here!</textarea>
+
   {% end %}
   
 </form>

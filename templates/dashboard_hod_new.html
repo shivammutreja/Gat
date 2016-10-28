@@ -32,8 +32,13 @@ Revision:
           <td><a name="get_hash" href="javascript:void(0)" onClick="javascript:sendUserId('{{user_name.get('user_id', '')}}')">
             {{user_name.get('user_name', '')}}</a></td>
           <td>{{user_name.get('user_email', '')}}</td>
-          <td>{{user_name.get('chapter', 'No chapter assigned')}}</td>
-          <td>{{user_name.get('status', 'Unknown!')}}</td>
+          {% if 'tasks' not in user_name.keys() %}
+            <td>{{user_name.get('chapter', 'No chapter assigned')}}</td>
+            <td>{{user_name.get('status', 'Unknown!')}}</td>
+          {% else %}
+            <td>{{user_name['tasks'][-1].get('chapter', 'No chapter assigned')}}</td>
+            <td>{{user_name['tasks'][-1].get('status', 'Unknown!')}}</td>
+          {% end %}
       </tr>
       {% end %}
       </tbody>

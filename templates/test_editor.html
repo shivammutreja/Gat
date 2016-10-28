@@ -13,13 +13,18 @@ Revision:
 
 <title>Content Editor</title>
 <form id="fkfrm" class=myFrom action="editor" method="post">
-  {% if 'content' in content.keys() %}
+  {% if 'content' in content['tasks'][-1].keys() %}
 
-    {% if content['status'] in ['Under Review', 'Completed'] %}
-      <p>The task is {{content['status']}}.</p>
+    {% if content['tasks'][-1]['status'] in ['Under Review', 'Completed'] %}
+      <p>The task is {{content['tasks'][-1]['status']}}.</p>
 
-    {% elif content['status']=="re-assigned" %}
-      <textarea class="myArea" id="myEditor" name="editor1">{{content['content']}}</textarea>
+    {% elif content['tasks'][-1]['status']=="re-assigned" %}
+      <textarea class="myArea" id="myEditor" name="editor1">{{content['tasks'][-1]['content']}}</textarea>
+
+      <textarea class="myArea" id="myEditor" name="get_chapter" style="display:none;">{{content['tasks'][-1]['chapter']}}</textarea>
+
+      <textarea class="myArea" id="myEditor" name="get_position" style="display:none;">{{len(content['tasks'])}}</textarea>
+
       <br>
       <div class="container-fluid">
         <div class="row">
@@ -39,11 +44,13 @@ Revision:
       <br>
       <div class="container-fluid alert alert-danger">
         <label>Remarks by the Hod</label>
-        <p>{{content['remarks']}}</p>
+        <p>{{content['tasks'][-1]['remarks']}}</p>
       </div>
 
     {% else %}
-      <textarea class="myArea" id="myEditor" name="editor1">{{content['content']}}</textarea>
+      <textarea class="myArea" id="myEditor" name="editor1">{{content['tasks'][-1]['content']}}</textarea>
+      <textarea class="myArea" id="myEditor" name="get_chapter" style="display:none;">{{content['tasks'][-1]['chapter']}}</textarea>
+      <textarea class="myArea" id="myEditor" name="get_position" style="display:none;">{{len(content['tasks'])}}</textarea>
       <br>
       <div class="container-fluid">
         <div class="row">
@@ -64,6 +71,8 @@ Revision:
 
   {% else %}
     <textarea class="myArea" id="myEditor" name="editor1" readonly>Write content here!</textarea>
+    <textarea class="myArea" id="myEditor" name="get_chapter" style="display:none;">{{content['tasks'][-1]['chapter']}}</textarea>
+    <textarea class="myArea" id="myEditor" name="get_position" style="display:none;">{{len(content['tasks'])}}</textarea>
     <br>
     <div class="container-fluid">
       <div class="row">
