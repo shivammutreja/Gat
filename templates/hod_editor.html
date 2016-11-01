@@ -27,8 +27,6 @@ Revision:
 
     <textarea class="myArea" id="myEditor" name="get_chapter" style="display:none;">{{content['tasks'][-1]['chapter']}}</textarea>
 
-    <textarea class="myArea" id="myEditor" name="get_position" style="display:none;">{{len(content['tasks'])}}</textarea>
-
     <br>
     <div class="container-fluid">
       <div class="row">
@@ -46,11 +44,8 @@ Revision:
     </div>
     {% end %}
 
-  {% elif 'status' not in content['tasks'][-1].keys() %}
-  <p>Assign a new task - <a href="/assign_task">Assign Task<a></p>
-
   {% else %}
-  <textarea class="myArea" id="myEditor" name="editor1" readonly>Write content here!</textarea>
+  <p>Assign a new task - <a href="/assign_task">Assign Task<a></p>
 
   {% end %}
   

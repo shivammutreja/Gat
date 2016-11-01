@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,10 +7,14 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{static_url('css/register.css')}}">
     <script type="text/javascript" src="{{static_url('scripts/upload.js')}}"></script>
-    <script src="https://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
 </head>
-<body>
-<div class="container">
+<body> -->
+{% extends "index_home.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{static_url('css/register.css')}}">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="container-fluid">
             <form class="form-horizontal" role="form" action="register" method="post" id="registration_form">
                 <h2>Registration Form</h2>
                 <div class="form-group">
@@ -53,8 +57,7 @@
                 </div>
             </form> <!-- /form -->
         </div> <!-- ./container -->
-
-</body>
+{% end %}
 <!--<div class="container">-->
     <!--<form action="register" method="post" id="registration_form">-->
         <!--<label><b>Email</b></label>-->
@@ -83,4 +86,3 @@
         <!--</div>-->
     <!--</form>-->
 <!--</div>-->
-</html>

@@ -60,12 +60,17 @@ class CheckCredentials:
 
             user_coll.update({'user_id': user_hash, 'password': pass_hash}, {'$set':\
             {'user_name': user_name, 'user_birthdate': birthdate, 'user_email':\
-            user_email,}}, upsert=True)
+            user_email, 'hod_id': hod_user_hash}}, upsert=True)
 
       @staticmethod
       def get_users(hod_user_hash):
             try:
-                  users = coll.find_one({'user_id': hod_user_hash}, {'_id': False})['users']
+                  # for user in coll.find({'user_id': hod_user_hash})['users']:
+                  #       user_coll.find()
+
+                  # users = coll.find_one({'user_id': hod_user_hash}, {'_id': False})['users']
+                  # return users
+                  users = list(user_coll.find({'hod_id': hod_user_hash}, {'_id': False}))
                   return users
             except Exception,e:
                   print e
@@ -80,9 +85,10 @@ class CheckCredentials:
                   print e
 
       @staticmethod
-      def save_user_content(user_hash, content, chapter_id, position):
-            user_coll.update({'user_id': user_hash, 'tasks.chapter': chapter_id}, {'$set': \
-                  {'tasks.{}.content'.format(position): content}})
+      def save_user_content(user_hash, content, chapter_id):
+            user_coll.update({'user_id': user_hash, 'tasks.chapter': chapter_id,\
+             'tasks.status': {'$in': ['Pending', 're-assigned']}}, {'$set': \
+             {'tasks.$.content': content}})
 
             return
 
@@ -90,14 +96,13 @@ class CheckCredentials:
       This method sets the status to 'under review' after the user clicks on 'final submission' button
       """
       @staticmethod
-      def final_user_submission(user_hash, content, user_email, chapter_id, position):
-            print position, "!!!!"
-            user_coll.update({'user_id': user_hash, 'tasks.chapter': chapter_id}, {'$set': \
-                  {'tasks.{}.content'.format(position): content, \
-                  'tasks.{}.status'.format(position): 'Under Review'}})
+      def final_user_submission(user_hash, content, user_email, chapter_id):
+            user_coll.update({'user_id': user_hash, 'tasks.chapter': chapter_id, \
+                  'tasks.status': {'$in': ['Pending', 're-assigned']}},{'$set': \
+                  {'tasks.$.content': content, 'tasks.$.status': 'Under Review'}})
 
-            coll.update({'users.user_id': user_hash, 'users.tasks.chapter': chapter_id}, {'$set': \
-                  {'users.$.tasks.{}.status'.format(position): 'for review'}})
+            # coll.update({'users.user_id': user_hash, 'users.tasks.chapter': chapter_id}, {'$set': \
+            #       {'users.$.tasks.{}.status'.format(position): 'for review'}})
 
             return
 
@@ -105,13 +110,13 @@ class CheckCredentials:
       This method sets the status to 'completed' after the hod clicks on 'mark as complete' button
       """
       @staticmethod
-      def mark_task_complete(hod_id, user_id, chapter_id, position):
-            print position, "@@"
-            user_coll.update({'user_id': user_id, 'tasks.chapter': chapter_id}, {'$set': \
-                  {'tasks.{}.status'.format(position): 'Completed'}})
+      def mark_task_complete(hod_id, user_id, chapter_id):
+            
+            user_coll.update({'user_id': user_id, 'tasks.chapter': chapter_id, 'tasks.status': \
+                  'Under Review'}, {'$set': {'tasks.$.status': 'Completed'}})
 
-            coll.update({'user_id': hod_id, 'users.user_id': user_id, 'users.tasks.chapter': \
-                  chapter_id}, {'$set': {'users.$.tasks.{}.status'.format(position): 'Completed'}})
+            # coll.update({'user_id': hod_id, 'users.user_id': user_id, 'users.tasks.chapter': \
+            #       chapter_id}, {'$set': {'users.$.tasks.{}.status'.format(position): 'Completed'}})
 
             return
 
@@ -188,21 +193,20 @@ class CheckCredentials:
 
             print user_id, '@!@@!'
 
-            coll.update({'user_id': hod_user_hash, 'users.user_id': user_id}, \
-                  {'$addToSet': {'users.$.tasks': {'chapter': chapter, 'status': 'pending'}}})
+            # coll.update({'user_id': hod_user_hash, 'users.user_id': user_id}, \
+            #       {'$addToSet': {'users.$.tasks': {'chapter': chapter, 'status': 'pending'}}})
             
             return
 
       @staticmethod
-      def reassign_task(hod_user_hash, user_id, remarks, chapter_id, position):
-            user_coll.update({'user_id': user_id, 'tasks.chapter': chapter_id}, {'$set': \
-                  {'tasks.{}.status'.format(position): 're-assigned', \
-                  'tasks.{}.remarks'.format(position): remarks}})
+      def reassign_task(hod_user_hash, user_id, remarks, chapter_id):
+            user_coll.update({'user_id': user_id, 'tasks.chapter': chapter_id, 'tasks.status': \
+                  'Under Review'}, {'$set': {'tasks.$.status': 're-assigned', 'tasks.$.remarks': remarks}})
 
-            coll.update({'user_id': hod_user_hash, 'users.user_id': user_id, \
-                  'users.tasks.chapter': chapter_id}, {'$set': {'users.$.tasks.{}.status'.
-                  format(position): 're-assigned', 'users.$.tasks.{}.remarks'.format(position):
-                   remarks}})
+            # coll.update({'user_id': hod_user_hash, 'users.user_id': user_id, \
+            #       'users.tasks.chapter': chapter_id}, {'$set': {'users.$.tasks.{}.status'.
+            #       format(position): 're-assigned', 'users.$.tasks.{}.remarks'.format(position):
+            #        remarks}})
 
             return
 
