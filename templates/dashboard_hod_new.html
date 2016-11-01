@@ -33,8 +33,8 @@ Revision:
             {{user_name.get('user_name', '')}}</a></td>
           <td>{{user_name.get('user_email', '')}}</td>
           {% if 'tasks' not in user_name.keys() %}
-            <td>{{user_name.get('chapter', 'No chapter assigned')}}</td>
-            <td>{{user_name.get('status', 'Unknown!')}}</td>
+            <td>No chapter assigned</td>
+            <td>Unknown!</td>
           {% else %}
             <td>{{user_name['tasks'][-1].get('chapter', 'No chapter assigned')}}</td>
             <td>{{user_name['tasks'][-1].get('status', 'Unknown!')}}</td>
@@ -45,5 +45,7 @@ Revision:
     </table>
   </div>
 </div>
+{% else %}
+<p>You have no users yet! Add a user - <a href="/add_user">Add user</a></p>
 {% end %}
 {% end %}
