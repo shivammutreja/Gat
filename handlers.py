@@ -226,16 +226,15 @@ class ShowEditor(BaseHandler):
         user_hash = self.get_current_user().get('user_id')
         user_email = self.get_current_user().get('user_email')
         chapter_id = self.get_body_argument("get_chapter")
-        task_position = int(self.get_body_argument("get_position")) - 1
         print chapter_id, '##'*10
         content = self.get_argument("editor1", default=None, strip=False)
         if self.get_body_argument('draft', default=None):
             print 'draft hai!'
-            yield self.save_user_written_content(user_hash, content, chapter_id, task_position)
+            yield self.save_user_written_content(user_hash, content, chapter_id)
         else:
             print 'final hai!'
             yield self.send_user_content_for_review(user_hash, content, user_email, \
-                chapter_id, task_position)
+                chapter_id)
         self.redirect('/dashboard')
 
     @tornado.gen.coroutine
@@ -243,14 +242,14 @@ class ShowEditor(BaseHandler):
         raise tornado.gen.Return(CheckCredentials.get_user_tasks(user_hash))
 
     @tornado.gen.coroutine
-    def save_user_written_content(self, user_hash, content, chapter_id, task_position):
+    def save_user_written_content(self, user_hash, content, chapter_id):
         raise tornado.gen.Return(CheckCredentials.save_user_content(user_hash, content, \
-            chapter_id, task_position))
+            chapter_id))
 
     @tornado.gen.coroutine
-    def send_user_content_for_review(self, user_hash, content, user_email, chapter_id, task_position):
+    def send_user_content_for_review(self, user_hash, content, user_email, chapter_id):
         raise tornado.gen.Return(CheckCredentials.final_user_submission(user_hash, 
-            content, user_email, chapter_id, task_position))
+            content, user_email, chapter_id))
 
 
 class UploadImage(BaseHandler):
@@ -403,13 +402,12 @@ class UserTaskFromHod(BaseHandler):
         user_id = self.get_argument("re-assign", '')
         hod_id = self.get_current_user().get("user_id",'')
         chapter_id = self.get_argument("get_chapter")
-        task_position = int(self.get_argument("get_position")) - 1
         if user_id:
-            self.redirect('/reassign_form?user_hash={}&position={}&chapter_id={}'.\
-                format(user_id, task_position, chapter_id))
+            self.redirect('/reassign_form?user_hash={}&chapter_id={}'.\
+                format(user_id, chapter_id))
         else:
             user_id = self.get_argument("complete")
-            CheckCredentials.mark_task_complete(hod_id, user_id, chapter_id, task_position)
+            CheckCredentials.mark_task_complete(hod_id, user_id, chapter_id)
             self.redirect('/dashboard')
 
         # TODO: Need a unique id for chapter.
@@ -419,20 +417,16 @@ class ReassignmentForm(BaseHandler):
     def get(self):
         user_id = self.get_argument('user_hash')
         chapter_id = self.get_argument('chapter_id')
-        task_position = self.get_argument('position')
-        self.render("reassignment_form.html", user_id=user_id, chapter_id=chapter_id,
-         task_position=task_position)
+        self.render("reassignment_form.html", user_id=user_id, chapter_id=chapter_id,)
 
     def post(self):
         user_id = self.get_body_argument("get_user_id")
         chapter_id = self.get_body_argument("get_chapter_id")
-        task_position = int(self.get_body_argument("get_position"))
         hod_id = self.get_current_user().get("user_id",'')
         remarks = self.get_body_argument("message")
         print user_id
         print remarks
-        print task_position
-        CheckCredentials.reassign_task(hod_id, user_id, remarks, chapter_id, task_position)
+        CheckCredentials.reassign_task(hod_id, user_id, remarks, chapter_id)
         self.redirect("/dashboard")
 
 
