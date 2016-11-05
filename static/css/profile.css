@@ -1,0 +1,13 @@
+
+#test_hover a {
+    /* current styles */
+    opacity:0;
+}
+
+#test_hover:hover a {
+    opacity:0.9;
+    position: absolute;
+    top: 8px;
+    left: 220px;
+    color: red;
+}

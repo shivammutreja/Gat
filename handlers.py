@@ -429,6 +429,11 @@ class ReassignmentForm(BaseHandler):
         CheckCredentials.reassign_task(hod_id, user_id, remarks, chapter_id)
         self.redirect("/dashboard")
 
+class UserProfile(BaseHandler):
+
+    def get(self):
+        self.render("user_profile.html", image=None)
+
 
 class SignOut(BaseHandler):
     # @tornado.web.authenticated
@@ -455,6 +460,7 @@ handlers = [
     (r'/assign_task', AssignTask),
     (r'/user_from_hod', UserTaskFromHod),
     (r'/reassign_form', ReassignmentForm),
+    (r'/profile', UserProfile),
     (r'/logout', SignOut),
     (r'/test', Try),
 ]
