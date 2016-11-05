@@ -430,11 +430,17 @@ class ReassignmentForm(BaseHandler):
         self.redirect("/dashboard")
 
 
+class Report(BaseHandler):
+    def get(self):
+        self.render("report.html")
+
+
 class SignOut(BaseHandler):
     # @tornado.web.authenticated
     def get(self):
         self.clear_cookie("user")
         self.redirect('/login')
+
 
 class Try(BaseHandler):
     def get(self):
@@ -457,6 +463,7 @@ handlers = [
     (r'/reassign_form', ReassignmentForm),
     (r'/logout', SignOut),
     (r'/test', Try),
+    (r'/report', Report),
 ]
 
 settings = dict(
