@@ -1,0 +1,34 @@
+<!-- Author: Vasu Gaur
+Date: 18/10/2016
+Purpose: HTML view for creating new user by the HOD.
+
+Revision:
+	Author: Shivam Mutreja
+	Date: 20/10/2016
+	Purpose: Extended the base html for consistent view. -->
+
+{% extends "index_user.html" %}
+
+{% block content %}
+
+<title>Add User</title>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3" id="test_hover">
+            {% if image %}
+            <img class="img-rounded" src="{{image}}" height="200px" width="230px">
+            {% else %}
+            <img class="img-rounded" src="{{static_url ('narcos.jpeg')}}" height="200px" width="230px">
+            {% end %}
+            
+            <a class="try" href="#"><i class="fa fa-lg fa-pencil-square-o" aria-hidden="true"></i></a>
+        
+        </div>
+        <div class="col-sm-3 col-sm-push-1">
+            <textarea class="well" cols="40">Write something about yourself!</textarea>
+        </div>
+    </div>
+</div>
+
+{% end %}
