@@ -1,25 +1,25 @@
 {% extends "index_hod.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
             <form class="form-horizontal" role="form" method="post" id="report">
                 <h2>Report Form</h2>
                 <div class="form-group">
                     <label for="Grade" class="col-sm-3 control-label">Grade</label>
                     <div class="col-sm-9">
-                        <input type="text" id="Grade" placeholder="Full Name" class="form-control" autofocus>
+                        <input type="text" id="Grade" placeholder="Grade" class="form-control" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Subject" class="col-sm-3 control-label">Subject</label>
                     <div class="col-sm-9">
-                        <input type="text" id="Subject" placeholder="Email" class="form-control">
+                        <input type="text" id="Subject" placeholder="Subject" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Chapter" class="col-sm-3 control-label">Chapter</label>
                     <div class="col-sm-9">
-                        <input type="text" id="Chapter" placeholder="Password" class="form-control">
+                        <input type="text" id="Chapter" placeholder="Chapter" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
@@ -33,23 +33,8 @@
                     <div class="col-sm-9">
                         <input type="text" id="birthDate" class="form-control">
                     </div>
-                </div>
-                <!--<div class="form-group">-->
-                    <!--<label for="country" class="col-sm-3 control-label">Country</label>-->
-                    <!--<div class="col-sm-9">-->
-                        <!--<select id="country" class="form-control">-->
-                            <!--<option>Afghanistan</option>-->
-                            <!--<option>Bahamas</option>-->
-                            <!--<option>Cambodia</option>-->
-                            <!--<option>Denmark</option>-->
-                            <!--<option>Ecuador</option>-->
-                            <!--<option>Fiji</option>-->
-                            <!--<option>Gabon</option>-->
-                            <!--<option>Haiti</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div> &lt;!&ndash; /.form-group &ndash;&gt;-->
-                </div> <!-- /.form-group -->
+                </div>          
+                </div> 
                 <div class="form-group">
                     <h3>Please make sure that the following points are covered</h3>
                     <div class="panel panel-default">
@@ -64,19 +49,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-9 col-sm-offset-3">
+                    <div class="col-sm-9 col-sm-offset-1">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox">All the points are covered
                             </label>
                         </div>
-                    </div>
-                </div> <!-- /.form-group -->
-                <div class="form-group container-fluid" >
-                    <div class="col-sm-9 col-sm-offset-3">
                         <button type="submit" class="btn btn-primary btn-block">Submit report</button>
                     </div>
                 </div>
             </form> <!-- /form -->
-        </div> <!-- ./container -->
+</div> <!-- ./container -->
 {% end %}

@@ -467,9 +467,9 @@ handlers = [
     (r'/user_from_hod', UserTaskFromHod),
     (r'/reassign_form', ReassignmentForm),
     (r'/profile', UserProfile),
+    (r'/report', Report),
     (r'/logout', SignOut),
     (r'/test', Try),
-    (r'/report', Report),
 ]
 
 settings = dict(
