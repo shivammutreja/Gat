@@ -14,6 +14,24 @@ Revision:
 	Author: Shivam Mutreja
 	Date: 24/10/2016
 	Purpose: Added a new handler to get user task(content) from the HOD dashboard.
+
+    Author: Shivam Mutreja
+    Date: 25/10/2016
+    Purpose: Added a Post handle for user to delete uploaded image.
+
+    Author: Shivam Mutreja
+    Date: 27/10/2016
+    Purpose: Functionality that allows HOD to mark user task for review as complete.
+            Also, added new handler for re-assigning task.
+
+    Author: Shivam Mutreja
+    Date: 5/11/2016
+    Purpose: Added a new handler to get user profile.
+
+    Author: Shivam Mutreja
+    Date: 7/10/2016
+    Purpose: Added a Post handle for user to update profile picture.
+
 """
 
 import os, uuid, sys
@@ -432,8 +450,27 @@ class ReassignmentForm(BaseHandler):
 class UserProfile(BaseHandler):
 
     def get(self):
-        self.render("user_profile.html", image=None)
+        user_hash = self.get_current_user().get("user_id")
+        user_profile = CheckCredentials.get_user_profile(user_hash)
+        self.render("user_profile.html", profile=user_profile)
 
+    @asynchronous
+    @tornado.gen.coroutine
+    def post(self):
+        user_hash = self.get_current_user().get("user_id")
+        fileinfo = self.request.files['filearg']
+        # dp = self.get_body_argument("filearg")
+        fname = fileinfo[0]['filename']
+        fbody = fileinfo[0]['body']
+        image = yield self.upload_dp(fbody, fname)
+        image_id = image.get("hdpi", '')
+        CheckCredentials.add_profile_image(user_hash, image_id)
+        self.redirect("/profile")
+
+    @tornado.gen.coroutine
+    def upload_dp(self, file_body, file_name):
+        s3_obj = AmazonS3(image_link=file_body, news_id=file_name)
+        raise tornado.gen.Return(s3_obj.run())
 
 class Report(BaseHandler):
     def get(self):
