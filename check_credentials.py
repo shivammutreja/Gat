@@ -6,9 +6,21 @@ Date: 18/10/2016
 Purpose: Updating data in the database.
 
 Revision:
-	Author: Shivam Mutreja
-	Date: 20/10/2016
-	Purpose: T new function to delete user images.
+      Author: Shivam Mutreja
+      Date: 20/10/2016
+      Purpose: Added new function to delete user images.
+
+      Author: Shivam Mutreja
+      Date: 27/10/2016
+      Purpose: Function that allows HOD to mark user task for review as complete.
+      
+      Author: Shivam Mutreja
+      Date: 28/10/2016
+      Purpose: Function that allows HOD to re-assign task to user
+
+      Author: Shivam Mutreja
+      Date: 5/11/2016
+      Purpose: Function to edit profile image and get user profile
 
 """
 
@@ -209,4 +221,17 @@ class CheckCredentials:
             #        remarks}})
 
             return
+
+      @staticmethod
+      def add_profile_image(user_id, dp):
+            user_coll.update({'user_id': user_id}, {'$set': {'dp': dp}})
+            return
+
+      @staticmethod
+      def get_user_profile(user_id):
+            print user_id, '@'*10
+            profile = user_coll.find_one({'user_id': user_id}, {'_id': False})
+
+            return profile
+
 

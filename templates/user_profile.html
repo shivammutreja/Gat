@@ -1,11 +1,15 @@
 <!-- Author: Vasu Gaur
-Date: 18/10/2016
-Purpose: HTML view for creating new user by the HOD.
+Date: 4/11/2016
+Purpose: HTML view for user profile as seen by user.
 
 Revision:
 	Author: Shivam Mutreja
-	Date: 20/10/2016
-	Purpose: Extended the base html for consistent view. -->
+	Date: 5/11/2016
+	Purpose: Showing edit option on hovering over the profile image. 
+
+    Author: Shivam Mutreja
+    Date: 7/11/2016
+    Purpose: Added a Jquery function to edit User Profile Image without having an extra submit and "choose file" button. -->
 
 {% extends "index_user.html" %}
 
@@ -16,17 +20,38 @@ Revision:
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3" id="test_hover">
-            {% if image %}
-            <img class="img-rounded" src="{{image}}" height="200px" width="230px">
+            {% if profile.get('dp', '') %}
+            <img class="img-rounded" src="{{profile.get('dp')}}" height="200px" width="230px">
             {% else %}
             <img class="img-rounded" src="{{static_url ('narcos.jpeg')}}" height="200px" width="230px">
             {% end %}
             
-            <a class="try" href="#"><i class="fa fa-lg fa-pencil-square-o" aria-hidden="true"></i></a>
+            <a class="try" onClick="javascript:editDp()"><i class="fa fa-lg fa-pencil-square-o" aria-hidden="true"></i></a>
+
+            <form action="" method="post" enctype="multipart/form-data" >
+                <input type="file" name="filearg" onchange="editProfilePic()" style="display:none;" id="upload-dp"/>
+                <input type="submit" id="test" style="display:none;"/>
+            </form>
         
         </div>
-        <div class="col-sm-3 col-sm-push-1">
+        <div class="col-sm-3 col-sm-push-1 info">
+            <div class="span5">User Name:&nbsp;&nbsp;{{profile.get("user_name", '')}}</div>
+            &nbsp;
+            <div class="span5">Email:&nbsp;&nbsp;{{profile.get("user_email", '')}}</div>
+            &nbsp;
+            <div class="span5">Birthdate:&nbsp;&nbsp;{{profile.get("user_birthdate", '')}}</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            &nbsp;
+            {% if profile.get('bio', '') %}
+            <div class="span5">{{profile.get('bio', '')}}</div>
+            {% else %}
             <textarea class="well" cols="40">Write something about yourself!</textarea>
+            {% end %}
+        
         </div>
     </div>
 </div>
