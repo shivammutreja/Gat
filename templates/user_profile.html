@@ -35,21 +35,30 @@ Revision:
         
         </div>
         <div class="col-sm-3 col-sm-push-1 info">
-            <div class="span5">User Name:&nbsp;&nbsp;{{profile.get("user_name", '')}}</div>
+            <div class="span5">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                &nbsp;&nbsp;{{profile.get("user_name", '')}}
+            </div>
             &nbsp;
-            <div class="span5">Email:&nbsp;&nbsp;{{profile.get("user_email", '')}}</div>
+            <div class="span5">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                &nbsp;&nbsp;{{profile.get("user_email", '')}}
+            </div>
             &nbsp;
-            <div class="span5">Birthdate:&nbsp;&nbsp;{{profile.get("user_birthdate", '')}}</div>
+            <div class="span5">
+                <i class="fa fa-birthday-cake" aria-hidden="true"></i>
+                &nbsp;&nbsp;{{profile.get("user_birthdate", '')}}
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             &nbsp;
             {% if profile.get('bio', '') %}
             <div class="span5">{{profile.get('bio', '')}}</div>
             {% else %}
-            <textarea class="well" cols="40">Write something about yourself!</textarea>
+            <div class="span12"><textarea class="well" cols="40">Write something about yourself!</textarea></div>
             {% end %}
         
         </div>

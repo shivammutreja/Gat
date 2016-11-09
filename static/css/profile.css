@@ -7,7 +7,7 @@
 
 #test_hover:hover a {
     display: inline-block;
-    opacity:0.7;
+    opacity: 0.7;
     position: absolute;
     top: 8px;
     left: 220px;
@@ -20,7 +20,12 @@
 }
 
 .info {
-    margin-top: 25px;
+    margin-top: 60px;
+}
+
+.well{
+  font-family: 'Roboto Slab', serif;
+  background-color: #d9edf7;
 }
 
 /*body {
