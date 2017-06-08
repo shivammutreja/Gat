@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <meta charset="UTF-8">
+    <title>Media Upload</title>
+    <div class="container" style="width: 90%">
+        <div class="panel panel-default">
+        <div class="panel-heading"><strong>Upload Files</strong></div>
+        <div class="panel-body">
+
+          <!-- Standar Form -->
+          <h4>Select files from your computer</h4>
+          <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+            <div class="form-inline">
+              <div class="form-group">
+                <input type="file" name="filearg" id="js-upload-files" multiple>
+              </div>
+              <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit" onClick="javascript:progressbar()">Upload files</button>
+            </div>
+          </form>
+
+            <!--Desciption box  -->
+          <h4>Description for the choice</h4>
+            <div class="form-group" id="description-box">
+                <!--<label for="comment">Comment:</label>-->
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+

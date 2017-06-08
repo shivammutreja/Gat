@@ -1,0 +1,75 @@
+{% extends "new_ck.html" %}
+
+{% block choices %}
+
+{% if not image %}
+<p id="image_path"></p>
+    <div class="row">
+        <div class="col-sm-4">
+            Enter Choice 1: <input type="text" placeholder="Choice 1" name="choice1" />
+        </div>
+        <div class="col-sm-8">
+            <form id="form1" action="/file" method="post" enctype="multipart/form-data" runat="server">
+                <input type='file' name="get_image" id="imgInp" multiple/><br />
+                <img id="blah" style="display:none" alt="your image" />
+                <button class="btn btn-sm btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+{% else %}
+Choice 1 : <input type="text" value="{{image}}" />
+<img src="{{image}}" alt="your image" />
+{% end if %}
+
+    <script>
+    $(document).ready(function(){
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                console.log(reader);
+            
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                    // $('.get_data').data(e.target.result);
+                    $('#blah').css({'height': '100px', 'width': '100px','display': 'inline'});
+                }
+
+            
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    
+        $("#imgInp").change(function(){
+            readURL(this);
+        });
+    });
+
+    function ajaxSubmit() {
+        console.log($("#imgInp"));
+        var img_data = $("#blah").attr("src")
+        var img_title = $("#imgInp").val();
+
+        console.log($("form")[0]);
+        // alert(img_title);
+        $.ajax({
+            type: "POST",
+            url: "/test",
+            data: {"img_data": img_data,
+                    "img_title": img_title},
+            // data: $("form").serialize(),
+            success: function(response) {
+                alert(response);
+                if(response == "Successful")
+                    {
+                    alert(image);
+                    // $("#image_path").innerHtml(image.image_id)
+                    // $('form').removeAttr('onsubmit'); // prevent endless loop
+                    // $('form').submit();
+                }
+            }
+        });
+    }
+    
+    </script>
+
+{% end block %}

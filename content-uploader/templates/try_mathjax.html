@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex, nofollow">
+	<title>Creating mathematical formulas</title>
+	<script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
+</head>
+
+<body>
+
+<form method="post" action="">
+	<textarea cols="10" id="editor1" name="editor1" rows="10" >&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://ckeditor.com/"&gt;CKEditor&lt;/a&gt;.&lt;/p&gt;
+  </textarea>
+  <button type="submit" name="Submit" style="display: inline-block;"></button>
+</form>
+
+	<script>
+		CKEDITOR.replace( 'editor1', {
+			extraPlugins: 'mathjax',
+			mathJaxLib: 'http://cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=TeX-AMS_HTML',
+      height: 320,
+      filebrowserImageUploadUrl: "/file",
+    } );
+    var dialog = CKEDITOR.dialog.getCurrent();
+    console.log(dialog);
+
+		if ( CKEDITOR.env.ie && CKEDITOR.env.version == 8 ) {
+			document.getElementById( 'ie8-warning' ).className = 'tip alert';
+		}
+	</script>
+</body>
+
+</html>
+
