@@ -9,7 +9,7 @@ import tornado.web
 from tornado import gen
 from tornado.web import asynchronous
 import json
-#import base64
+import base64
 
 from amazon_s3 import AmazonS3
 
