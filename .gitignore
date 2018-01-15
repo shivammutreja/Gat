@@ -105,3 +105,9 @@ ENV/
 
 #bootstrap
 bootstrap/*
+
+#phabricator stuff
+phabricator/*
+arcanist/*
+libphutil/*
+
