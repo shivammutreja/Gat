@@ -111,3 +111,5 @@ phabricator/*
 arcanist/*
 libphutil/*
 
+#git-webui
+git-webui/*
